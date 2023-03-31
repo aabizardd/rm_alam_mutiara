@@ -19,7 +19,7 @@
                     <div class="card-body">
                         <!-- Logo -->
                         <div class="app-brand justify-content-center">
-                            <a href="index-2.html" class="app-brand-link gap-2">
+                            <a href="{{ url('/') }}" class="app-brand-link gap-2">
 
                                 <span class="app-brand-text demo h3 mb-0 fw-bold">Alam Mutiara</span>
                             </a>
@@ -70,6 +70,8 @@
                                 <button class="btn btn-primary d-grid w-100" type="submit">
                                     Masuk
                                 </button>
+
+
                             </div>
                         </form>
 
@@ -86,4 +88,11 @@
 @section('addScript')
     <!-- Page JS -->
     <script src="{{ asset('/') }}assets/js/pages-auth.js"></script>
+
+    {{-- <script>
+        $(document).ready(function() {
+            $('#formAuthentication')[0].reset();
+            // alert('haio')
+        });
+    </script> --}}
 @endsection

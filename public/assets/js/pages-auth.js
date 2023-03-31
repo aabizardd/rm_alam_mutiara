@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
                             message: "Silahkan masukkan username anda"
                         },
                         stringLength: {
-                            min: 6,
+                            min: 4,
                             message: "Username harus lebih dari 6 karakter"
                         }
                     }

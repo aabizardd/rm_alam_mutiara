@@ -30,5 +30,7 @@ Route::prefix('kelola_pengguna')->group(function () {
     Route::get('/', [App\Http\Controllers\KelolaPenggunaController::class, 'index'])->name('kelola_pengguna');
     Route::get('users', [App\Http\Controllers\KelolaPenggunaController::class, 'get_all_users'])->name('kelola_pengguna.users');
     Route::get('delete/{id}', [App\Http\Controllers\KelolaPenggunaController::class, 'destroy'])->name('kelola_pengguna.delete');
+    Route::post('store', [App\Http\Controllers\KelolaPenggunaController::class, 'store'])->name('kelola_pengguna.store');
+    Route::post('update', [App\Http\Controllers\KelolaPenggunaController::class, 'update'])->name('kelola_pengguna.update');
 
 });

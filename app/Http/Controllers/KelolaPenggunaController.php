@@ -6,6 +6,9 @@ use App\Models\User;
 use DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class KelolaPenggunaController extends Controller
 {
@@ -63,9 +66,42 @@ class KelolaPenggunaController extends Controller
  * @param \Illuminate\Http\Request $request
  * @return \Illuminate\Http\Response
  */
-    public function store(Request $request)
+    public function store(Request $req)
     {
 //
+
+        // dd('ok');
+
+        $validator = Validator::make($req->all(), [
+            'name' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'unique:users'],
+            'role' => ['required', 'string'],
+            'password' => ['required', 'string'],
+            'avatar' => ['nullable', 'image', 'mimes:jpg,png,jpeg,webp,gif,svg,bmp', 'max:2048'],
+        ]);
+
+        // dd($req->name);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $imageName = time() . '.' . $req->avatar->extension();
+        $req->avatar->move(public_path('assets/img/avatars'), $imageName);
+
+        User::create([
+            'name' => $req->name,
+            'username' => $req->username,
+            'role' => $req->role,
+            'avatar' => $imageName,
+            'password' => Hash::make($req->password),
+        ]);
+
+        return redirect()->back()->with(['success' => 'Data Berhasil Disimpan!']);
+
     }
 
 /**
@@ -97,9 +133,71 @@ class KelolaPenggunaController extends Controller
  * @param int $id
  * @return \Illuminate\Http\Response
  */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-//
+
+        // $user = User::find();
+
+        // // dd($user->username);5
+
+        // $validator = $request->validate([
+        //     'name' => 'required|string|max:255',
+        //     'username' => 'required|unique:users,username,' . $user->id,
+        //     'role' => 'required|string',
+        //     'avatar' => 'image|mimes:jpg,png,jpeg|max:2048',
+        // ]);
+
+        // // dd($req->name);
+        // if ($validator->fails()) {
+        //     return redirect()
+        //         ->back()
+        //         ->withErrors($validator)
+        //         ->withInput();
+        // }
+
+        $user = User::findOrFail($request->id_user);
+
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:255'],
+            'username' => 'required|unique:users,username,' . $user->id,
+            'role' => 'required|string',
+            'password' => ['nullable', 'string', 'min:8'],
+            'avatar' => ['nullable', 'image', 'mimes:jpg,png,jpeg,webp,gif,svg,bmp', 'max:2048'],
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $data = [
+            'name' => $request->name,
+            'username' => $request->username,
+            'role' => $request->role,
+        ];
+
+        if ($request->password) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        if ($request->hasFile('avatar')) {
+
+            if ($request->avatar != "20.png") {
+                if (file_exists(public_path('assets/img/avatars/' . $user->avatar))) {
+                    unlink(public_path('assets/img/avatars/' . $user->avatar));
+                }
+            }
+
+            $imageName = time() . '.' . $request->avatar->extension();
+            $request->avatar->move(public_path('assets/img/avatars'), $imageName);
+            $data['avatar'] = $imageName;
+        }
+
+        $user->update($data);
+
+        return redirect()->back()->with(['success' => 'Data Berhasil Diupdate!']);
     }
 
 /**
@@ -113,6 +211,10 @@ class KelolaPenggunaController extends Controller
 //
 
         $data = User::find($id);
+
+        if (file_exists(public_path('assets/img/avatars/' . $data->avatar))) {
+            unlink(public_path('assets/img/avatars/' . $data->avatar));
+        }
 
         $data->delete();
 

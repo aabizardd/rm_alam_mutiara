@@ -50,10 +50,29 @@
                         <div class="card">
                             <div class="card-header border-bottom">
                                 <h5 class="card-title">List Pengguna Aplikasi</h5>
+
+                                @if ($errors->any())
+                                    <div class="alert alert-danger alert-dismissible" role="alert">
+                                        <h6 class="alert-heading mb-1">
+                                            <i class="bx bx-xs bx-store align-top me-2"></i>Danger!
+                                        </h6>
+                                        <span>
+
+                                            <ul>
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+
+                                        </span>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
+                                    </div>
+                                @endif
+
                                 <div class="d-flex justify-content-between align-items-center row py-3 gap-3 gap-md-0">
                                     <div class="col-md-4 user_role"></div>
-                                    <div class="col-md-4 user_plan"></div>
-                                    <div class="col-md-4 user_status"></div>
+
                                 </div>
                             </div>
                             <div class="card-datatable table-responsive">
@@ -71,137 +90,19 @@
                                     </thead>
 
 
+
+
                                 </table>
                             </div>
-                            <!-- Offcanvas to add new user -->
-                            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasAddUser"
-                                aria-labelledby="offcanvasAddUserLabel">
-                                <div class="offcanvas-header border-bottom">
-                                    <h6 id="offcanvasAddUserLabel" class="offcanvas-title">
-                                        Add User
-                                    </h6>
-                                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="offcanvas-body mx-0 flex-grow-0">
-                                    <form class="add-new-user pt-0" id="addNewUserForm" onsubmit="return false">
-                                        <div class="mb-3">
-                                            <label class="form-label" for="add-user-fullname">Full Name</label>
-                                            <input type="text" class="form-control" id="add-user-fullname"
-                                                placeholder="John Doe" name="userFullname" aria-label="John Doe" />
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label" for="add-user-email">Email</label>
-                                            <input type="text" id="add-user-email" class="form-control"
-                                                placeholder="john.doe@example.com" aria-label="john.doe@example.com"
-                                                name="userEmail" />
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label" for="add-user-contact">Contact</label>
-                                            <input type="text" id="add-user-contact" class="form-control phone-mask"
-                                                placeholder="+1 (609) 988-44-11" aria-label="john.doe@example.com"
-                                                name="userContact" />
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label" for="add-user-company">Company</label>
-                                            <input type="text" id="add-user-company" class="form-control"
-                                                placeholder="Web Developer" aria-label="jdoe1" name="companyName" />
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label" for="country">Country</label>
-                                            <select id="country" class="select2 form-select">
-                                                <option value="">Select</option>
-                                                <option value="Australia">Australia</option>
-                                                <option value="Bangladesh">Bangladesh</option>
-                                                <option value="Belarus">Belarus</option>
-                                                <option value="Brazil">Brazil</option>
-                                                <option value="Canada">Canada</option>
-                                                <option value="China">China</option>
-                                                <option value="France">France</option>
-                                                <option value="Germany">Germany</option>
-                                                <option value="India">India</option>
-                                                <option value="Indonesia">Indonesia</option>
-                                                <option value="Israel">Israel</option>
-                                                <option value="Italy">Italy</option>
-                                                <option value="Japan">Japan</option>
-                                                <option value="Korea">Korea, Republic
-                                                    of</option>
-                                                <option value="Mexico">Mexico</option>
-                                                <option value="Philippines">Philippines</option>
-                                                <option value="Russia">Russian
-                                                    Federation</option>
-                                                <option value="South Africa">South Africa</option>
-                                                <option value="Thailand">Thailand</option>
-                                                <option value="Turkey">Turkey</option>
-                                                <option value="Ukraine">Ukraine</option>
-                                                <option value="United Arab Emirates">United Arab
-                                                    Emirates</option>
-                                                <option value="United Kingdom">United Kingdom</option>
-                                                <option value="United States">United States</option>
-                                            </select>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label" for="user-role">User Role</label>
-                                            <select id="user-role" class="form-select">
-                                                <option value="subscriber">Subscriber</option>
-                                                <option value="editor">Editor</option>
-                                                <option value="maintainer">Maintainer</option>
-                                                <option value="author">Author</option>
-                                                <option value="admin">Admin</option>
-                                            </select>
-                                        </div>
-                                        <div class="mb-4">
-                                            <label class="form-label" for="user-plan">Select Plan</label>
-                                            <select id="user-plan" class="form-select">
-                                                <option value="basic">Basic</option>
-                                                <option value="enterprise">Enterprise</option>
-                                                <option value="company">Company</option>
-                                                <option value="team">Team</option>
-                                            </select>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">
-                                            Submit
-                                        </button>
-                                        <button type="reset" class="btn btn-label-secondary"
-                                            data-bs-dismiss="offcanvas">
-                                            Cancel
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
+
+                            @include('offcanvas.edit_user')
+                            @include('offcanvas.add_new_user')
+
                         </div>
                     </div>
                     <!-- / Content -->
 
-                    <!-- Footer -->
-                    <footer class="content-footer footer bg-footer-theme">
-                        <div class="container-fluid d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-                            <div class="mb-2 mb-md-0">
-                                ©
-                                <script>
-                                    document.write(
-                                        new Date().getFullYear()
-                                    );
-                                </script>
-                                , made with ❤️ by
-                                <a href="https://pixinvent.com/" target="_blank"
-                                    class="footer-link fw-semibold">PIXINVENT</a>
-                            </div>
-                            <div>
-                                <a href="https://themeforest.net/licenses/standard" class="footer-link me-4"
-                                    target="_blank">License</a>
-                                <a href="https://1.envato.market/pixinvent_portfolio" target="_blank"
-                                    class="footer-link me-4">More Themes</a>
-
-                                <a href="https://demos.pixinvent.com/frest-html-admin-template/documentation/"
-                                    target="_blank" class="footer-link me-4">Documentation</a>
-
-                                <a href="https://pixinvent.ticksy.com/" target="_blank"
-                                    class="footer-link d-none d-sm-inline-block">Support</a>
-                            </div>
-                        </div>
-                    </footer>
-                    <!-- / Footer -->
+                    @include('layouts.footer')
 
                     <div class="content-backdrop fade"></div>
                 </div>
@@ -232,7 +133,13 @@
     <!-- Page JS -->
     {{-- <script src="{{ asset('/') }}assets/js/app-user-list.js"></script> --}}
 
-
+    {{-- <script>
+        $(document).ready(function() {
+            $("#submitBtn").click(function() {
+                $("#addNewUserForm").submit(); // Submit the form
+            });
+        });
+    </script> --}}
 
 
 
@@ -275,8 +182,7 @@
                         (e = s.DataTable({
                             ajax: "{{ route('kelola_pengguna.users') }}",
                             columns: [{
-                                    data: 'id',
-                                    name: 'id'
+                                    data: "id",
                                 }, {
                                     data: 'name',
                                     name: 'name'
@@ -354,7 +260,14 @@
                                         var s = "/kelola_pengguna/delete/" + a.id;
 
                                         return (
-                                            '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon"><i class="bx bx-edit"></i></button><a class="btn btn-sm btn-icon delete-record" href="' +
+                                            '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon btn-edit" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEditUser" data-name="' +
+                                            a.name +
+                                            '" data-username="' + a.username +
+                                            '" data-role="' + a.role +
+                                            '" data-avatar="' + a.avatar +
+                                            '" data-id="' + a.id +
+                                            '" data-password="' + a.password +
+                                            '"><i class="bx bx-edit"></i></button><a class="btn btn-sm btn-icon delete-record" href="' +
                                             s + '"><i class="bx bx-trash"></i></a>'
                                         );
                                     },
@@ -688,6 +601,40 @@
 
 
                         }),
+                        $(".datatables-users tbody").on("click", ".btn-edit", function(e) {
+
+
+                            $('#editUserForm')[0].reset();
+
+                            var name = $(this).data('name');
+                            var username = $(this).data('username');
+                            var role = $(this).data('role');
+                            var avatar = $(this).data('avatar');
+                            var id = $(this).data('id');
+                            var password = $(this).data('password');
+
+                            $(".offcanvas-body #id_user").val(id);
+                            $(".offcanvas-body #avatar_old").val(avatar);
+                            $(".offcanvas-body #password_old").val(password);
+                            $(".offcanvas-body #username").val(username);
+                            $(".offcanvas-body #name").val(name);
+                            $(".offcanvas-body #role").val(role).change();
+                            $(".offcanvas-body .img-preview").attr("src",
+                                "{{ asset('/') }}assets/img/avatars/" + avatar);
+                            // As pointed out in comments, 
+                            // it is unnecessary to have to manually call the modal.
+                            // $('#addBookDialog').modal('show');
+
+                        }),
+                        $(".add-new").on("click", function(e) {
+
+                            $('#addNewUserForm')[0].reset();
+                            // alert('aok')
+                            // As pointed out in comments, 
+                            // it is unnecessary to have to manually call the modal.
+                            // $('#addBookDialog').modal('show');
+
+                        }),
                         setTimeout(() => {
                             $(".dataTables_filter .form-control").removeClass(
                                     "form-control-sm"
@@ -698,6 +645,7 @@
                         }, 300);
                 }),
                 (function() {
+                    // c.preventDefault();
                     var e = document.querySelectorAll(".phone-mask"),
                         t = document.getElementById("addNewUserForm");
                     e &&
@@ -709,23 +657,50 @@
                         }),
                         FormValidation.formValidation(t, {
                             fields: {
-                                userFullname: {
+                                name: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Please enter fullname "
+                                            message: "Masukkan nama lengkap pengguna"
                                         }
                                     }
                                 },
-                                userEmail: {
+                                username: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Please enter your email"
-                                        },
-                                        emailAddress: {
-                                            message: "The value is not a valid email address"
+                                            message: "Masukkan username pengguna"
                                         }
                                     }
-                                }
+                                },
+                                avatar: {
+                                    validators: {
+                                        notEmpty: {
+                                            message: "Pilih foto terlebih"
+                                        }
+                                    }
+                                },
+                                password: {
+                                    validators: {
+                                        notEmpty: {
+                                            message: "Please enter your password"
+                                        }
+                                    }
+                                },
+                                confirm_password: {
+                                    validators: {
+                                        notEmpty: {
+                                            message: "Please confirm password"
+                                        },
+                                        identical: {
+                                            compare: function() {
+                                                return t.querySelector(
+                                                    '[name="password"]'
+                                                ).value;
+                                            },
+                                            message: "The password and its confirm are not the same"
+                                        }
+                                    }
+                                },
+
                             },
                             plugins: {
                                 trigger: new FormValidation.plugins.Trigger(),
@@ -736,6 +711,62 @@
                                     }
                                 }),
                                 submitButton: new FormValidation.plugins.SubmitButton(),
+                                defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+                                autoFocus: new FormValidation.plugins.AutoFocus()
+                            }
+                        });
+                })(), (function() {
+                    // c.preventDefault();
+                    var e = document.querySelectorAll(".phone-mask"),
+                        t = document.getElementById("editUserForm");
+                    e &&
+                        e.forEach(function(e) {
+                            new Cleave(e, {
+                                phone: !0,
+                                phoneRegionCode: "US"
+                            });
+                        }),
+                        FormValidation.formValidation(t, {
+                            fields: {
+                                name: {
+                                    validators: {
+                                        notEmpty: {
+                                            message: "Masukkan nama lengkap pengguna"
+                                        }
+                                    }
+                                },
+                                username: {
+                                    validators: {
+                                        notEmpty: {
+                                            message: "Masukkan username pengguna"
+                                        }
+                                    }
+                                },
+
+                                confirm_password: {
+                                    validators: {
+                                        identical: {
+                                            compare: function() {
+                                                return t.querySelector(
+                                                    '[name="password"]'
+                                                ).value;
+                                            },
+                                            message: "The password and its confirm are not the same"
+                                        }
+                                    }
+                                },
+
+                            },
+                            plugins: {
+                                trigger: new FormValidation.plugins.Trigger(),
+                                bootstrap5: new FormValidation.plugins.Bootstrap5({
+                                    eleValidClass: "",
+                                    rowSelector: function(e, t) {
+                                        return ".mb-3";
+                                    }
+                                }),
+                                submitButton: new FormValidation.plugins.SubmitButton(),
+                                defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
                                 autoFocus: new FormValidation.plugins.AutoFocus()
                             }
                         });
@@ -750,6 +781,58 @@
                 title: "{{ $message }}",
                 icon: "success",
                 button: "Ok!",
+            });
+        </script>
+    @endif
+
+
+
+    <script>
+        function preview_img() {
+
+            const avatar = document.querySelector('#avatar_add');
+            const sampulLabel = document.querySelector('.custom-file-label');
+            const imgPreview = document.querySelector('.img-preview-add');
+
+            avatar.textContent = avatar.files[0].name;
+
+            const fileAvatar = new FileReader();
+            fileAvatar.readAsDataURL(avatar.files[0]);
+
+            fileAvatar.onload = function(e) {
+                imgPreview.src = e.target.result;
+            }
+
+        }
+
+        function preview_img_2() {
+
+            const avatar = document.querySelector('#avatar');
+            const sampulLabel = document.querySelector('.custom-file-label');
+            const imgPreview = document.querySelector('.img-preview');
+
+            avatar.textContent = avatar.files[0].name;
+
+            const fileAvatar = new FileReader();
+            fileAvatar.readAsDataURL(avatar.files[0]);
+
+            fileAvatar.onload = function(e) {
+                imgPreview.src = e.target.result;
+            }
+
+        }
+    </script>
+
+    <script>
+        $(".add-new").click(function() {
+            alert("Handler for .click() called.");
+        });
+    </script>
+
+    @if ($errors->any())
+        <script>
+            $(document).ready(function() {
+                $('#offcanvasAddUser').offcanvas('show')
             });
         </script>
     @endif

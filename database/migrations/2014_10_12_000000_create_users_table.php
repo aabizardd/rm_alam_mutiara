@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('password');
             $table->string('role');
-            $table->string('avatar')->default('10.png');
+            $table->string('avatar')->default('20.png');
             $table->rememberToken();
             $table->timestamps();
         });
