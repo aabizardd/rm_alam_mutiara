@@ -51,7 +51,7 @@
                             <div class="card-header border-bottom">
                                 <h5 class="card-title">List Pengguna Aplikasi</h5>
 
-                                @if ($errors->any())
+                                {{-- @if ($errors->any())
                                     <div class="alert alert-danger alert-dismissible" role="alert">
                                         <h6 class="alert-heading mb-1">
                                             <i class="bx bx-xs bx-store align-top me-2"></i>Danger!
@@ -68,7 +68,7 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="alert"
                                             aria-label="Close"></button>
                                     </div>
-                                @endif
+                                @endif --}}
 
                                 <div class="d-flex justify-content-between align-items-center row py-3 gap-3 gap-md-0">
                                     <div class="col-md-4 user_role"></div>

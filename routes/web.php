@@ -34,3 +34,7 @@ Route::prefix('kelola_pengguna')->group(function () {
     Route::post('update', [App\Http\Controllers\KelolaPenggunaController::class, 'update'])->name('kelola_pengguna.update');
 
 });
+
+Route::prefix('profile')->group(function () {
+    Route::get('/', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile');
+});

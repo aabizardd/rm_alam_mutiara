@@ -26,13 +26,18 @@
             <div class="mb-3">
                 <label class="form-label" for="name">Nama Lengkap</label>
                 <input type="text" class="form-control" id="name" placeholder="John Doe" name="name"
-                    aria-label="John Doe" />
+                    aria-label="John Doe" value="{{ old('name') }}" />
             </div>
 
 
             <div class="mb-3">
                 <label class="form-label" for="username">Username</label>
-                <input type="text" id="username" class="form-control" placeholder="abizardd_" name="username" />
+                <input type="text" id="username" class="form-control @error('username') invalid @enderror"
+                    placeholder="abizardd_" name="username" value="{{ old('username') }}" />
+
+                @error('username')
+                    <div class="error">{{ $message }}</div>
+                @enderror
             </div>
 
 

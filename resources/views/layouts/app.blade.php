@@ -85,6 +85,7 @@
     <!-- endbuild -->
 
     <!-- Vendors JS -->
+    <script src="{{ asset('/') }}assets/vendor/libs/select2/select2.js"></script>
     <script src="{{ asset('/') }}assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js"></script>
     <script src="{{ asset('/') }}assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js"></script>
     <script src="{{ asset('/') }}assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js"></script>
