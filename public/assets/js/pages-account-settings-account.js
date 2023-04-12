@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
                                 rowSelector: ".col-md-6"
                             }),
                             submitButton: new FormValidation.plugins.SubmitButton(),
+                            defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
                             autoFocus: new FormValidation.plugins.AutoFocus()
                         },
                         init: e => {
@@ -99,36 +100,22 @@ document.addEventListener("DOMContentLoaded", function(e) {
         i &&
             (i.onclick = function() {
                 1 == s.checked &&
-                    Swal.fire({
+                    swal({
                         text:
                             "Are you sure you would like to deactivate your account?",
                         icon: "warning",
                         showCancelButton: !0,
-                        confirmButtonText: "Yes",
-                        customClass: {
-                            confirmButton: "btn btn-primary me-2",
-                            cancelButton: "btn btn-label-secondary"
-                        },
-                        buttonsStyling: !1
-                    }).then(function(e) {
-                        e.value
-                            ? Swal.fire({
-                                  icon: "success",
-                                  title: "Deleted!",
-                                  text: "Your file has been deleted.",
-                                  customClass: {
-                                      confirmButton: "btn btn-success"
-                                  }
-                              })
-                            : e.dismiss === Swal.DismissReason.cancel &&
-                              Swal.fire({
-                                  title: "Cancelled",
-                                  text: "Deactivation Cancelled!!",
-                                  icon: "error",
-                                  customClass: {
-                                      confirmButton: "btn btn-success"
-                                  }
-                              });
+                        buttons: ["Batal", "Ya!"],
+                        buttons: ["Batal", "Ya!"],
+                        dangerMode: true,
+                        confirmButtonText: "Ya, hapus data itu!"
+                    }).then(willDelete => {
+                        if (willDelete) {
+                            // alert("ok");
+                            $("#formAccountDeactivation").submit();
+                        } else {
+                            swal("Data batal dihapus!");
+                        }
                     });
             });
         var t = document.querySelector("#phoneNumber"),

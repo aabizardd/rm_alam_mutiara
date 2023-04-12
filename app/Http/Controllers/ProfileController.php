@@ -2,10 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +29,7 @@ class ProfileController extends Controller
             'title' => 'Profil Pengguna - Aplikasi Pengelolaan RM Alam Mutiara',
         ];
 
-        return view('profile', $data);
+        return view('detail_profile', $data);
     }
 
     /**
@@ -70,9 +82,48 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+
+        // dd('ok');
+        $user = User::findOrFail($request->id_user);
+
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'role' => 'required|string',
+            'avatar' => ['nullable', 'image', 'mimes:jpg,png,jpeg,webp,gif,svg,bmp', 'max:2048'],
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator, 'edit_profile')
+                ->withInput();
+        }
+
+        $data = [
+            'name' => $request->name,
+            'username' => $request->username,
+            'role' => $request->role,
+        ];
+
+        if ($request->hasFile('avatar')) {
+
+            if ($request->avatar != "20.png") {
+                if (file_exists(public_path('assets/img/avatars/' . $user->avatar))) {
+                    unlink(public_path('assets/img/avatars/' . $user->avatar));
+                }
+            }
+
+            $imageName = time() . '.' . $request->avatar->extension();
+            $request->avatar->move(public_path('assets/img/avatars'), $imageName);
+            $data['avatar'] = $imageName;
+        }
+
+        $user->update($data);
+
+        return redirect()->back()->with(['success' => 'Data Pengguna Berhasil Diupdate!']);
     }
 
     /**
@@ -81,8 +132,48 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function hapus_akun(Request $request)
     {
-        //
+
+        $user = User::find($request->id_user);
+        $user->delete();
+        Auth::guard('web')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
+    }
+
+    public function update_password()
+    {
+        $data = [
+            'title' => 'Profil Pengguna - Aplikasi Pengelolaan RM Alam Mutiara',
+        ];
+
+        return view('profile_security', $data);
+    }
+
+    public function edit_pw(Request $request)
+    {
+
+        $currentPassword = $request->currentPassword;
+        $user = User::find(Auth::user()->id);
+
+        if (Hash::check($currentPassword, $user->password)) {
+            // Password cocok
+            // dd('cocok');
+
+            $data = [
+                'password' => Hash::make($request->newPassword),
+            ];
+
+            $user->update($data);
+
+            return redirect()->back()->with(['success' => 'Password Anda Berhasil Diupdate!']);
+
+        } else {
+            // dd('tidak cocok');
+            return redirect()->back()->with(['error' => 'Password Sekarang yang Anda Masukan Salah!']);
+        }
+
     }
 }

@@ -136,25 +136,6 @@ class KelolaPenggunaController extends Controller
     public function update(Request $request)
     {
 
-        // $user = User::find();
-
-        // // dd($user->username);5
-
-        // $validator = $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'username' => 'required|unique:users,username,' . $user->id,
-        //     'role' => 'required|string',
-        //     'avatar' => 'image|mimes:jpg,png,jpeg|max:2048',
-        // ]);
-
-        // // dd($req->name);
-        // if ($validator->fails()) {
-        //     return redirect()
-        //         ->back()
-        //         ->withErrors($validator)
-        //         ->withInput();
-        // }
-
         $user = User::findOrFail($request->id_user);
 
         $validator = Validator::make($request->all(), [
@@ -197,7 +178,35 @@ class KelolaPenggunaController extends Controller
 
         $user->update($data);
 
-        return redirect()->back()->with(['success' => 'Data Berhasil Diupdate!']);
+        return redirect()->back()->with(['success' => 'Data Pengguna Berhasil Diupdate!']);
+
+    }
+
+    public function update_status($id)
+    {
+
+        // dd($id);
+        $user = User::find($id);
+
+        // $data = [];
+
+        if ($user->status == 1) {
+
+            $data = [
+                'status' => 0,
+            ];
+
+        } else {
+
+            $data = [
+                'status' => 1,
+            ];
+        }
+
+        $user->update($data);
+
+        return redirect()->back()->with(['success' => 'Status Pengguna Berhasil Diupdate!']);
+
     }
 
 /**

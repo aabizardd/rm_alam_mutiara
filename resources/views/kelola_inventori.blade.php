@@ -49,7 +49,7 @@
                         <!-- Users List Table -->
                         <div class="card">
                             <div class="card-header border-bottom">
-                                <h5 class="card-title">List Pengguna Aplikasi</h5>
+                                <h5 class="card-title">List Bahan Baku</h5>
 
                                 {{-- @if ($errors->any())
                                     <div class="alert alert-danger alert-dismissible" role="alert">
@@ -81,9 +81,8 @@
                                         <tr>
 
                                             <th>ID</th>
-                                            <th>Nama Lengkap</th>
-                                            <th>Username</th>
-                                            <th>Role</th>
+                                            <th>Nama Bahan</th>
+                                            <th>Stok</th>
                                             <th>Status</th>
                                             <th>Action</th>
 
@@ -96,8 +95,8 @@
                                 </table>
                             </div>
 
-                            @include('offcanvas.edit_user')
-                            @include('offcanvas.add_new_user')
+                            {{-- @include('offcanvas.edit_user')
+                            @include('offcanvas.add_new_user') --}}
 
                         </div>
                     </div>
@@ -181,23 +180,20 @@
                         }),
                         s.length &&
                         (e = s.DataTable({
-                            ajax: "{{ route('kelola_pengguna.users') }}",
+                            ajax: "{{ route('inventori.get_all_inventories') }}",
                             columns: [{
                                     data: "id",
                                 }, {
-                                    data: 'name',
-                                    name: 'name'
+                                    data: 'nama_bahan',
+                                    name: 'nama_bahan'
                                 },
                                 {
-                                    data: 'username',
-                                    name: 'username'
+                                    data: 'stok_bahan',
+                                    name: 'stok_bahan'
                                 },
                                 {
-                                    data: 'role',
-                                    name: 'role'
-                                },
-                                {
-                                    data: 'status',
+                                    data: 'status_bahan',
+                                    name: 'status_bahan',
                                 },
                                 {
                                     data: 'action',
@@ -214,18 +210,28 @@
                                     },
                                 },
                                 {
+                                    targets: 0,
+                                    responsivePriority: 4,
+                                    render: function(e, t, a, n) {
+                                        var s = a.id;
+                                        // o = a.satuan_bahan;
+                                        return (s.toString());
+                                    },
+                                },
+                                {
                                     targets: 1,
                                     responsivePriority: 4,
                                     render: function(e, t, a, n) {
-                                        var s = a.name,
-                                            o = a.username,
-                                            l = a.avatar;
+                                        var s = a.nama_bahan,
+                                            o = a.stok_bahan,
+                                            l = a.gambar_bahan;
+                                        z = a.satuan_bahan;
                                         return (
                                             '<div class="d-flex justify-content-start align-items-center user-name"><div class="avatar-wrapper"><div class="avatar avatar-sm me-3">' +
                                             (l ?
                                                 '<img src="' +
                                                 assetsPath +
-                                                "img/avatars/" +
+                                                "img/bahan/" +
                                                 l +
                                                 '" alt="Avatar" class="rounded-circle">' :
                                                 '<span class="avatar-initial rounded-circle bg-label-' +
@@ -249,19 +255,27 @@
                                             r +
                                             '" class="text-body text-truncate"><span class="fw-semibold">' +
                                             s +
-                                            '</span></a><small class="text-muted">' +
-                                            o +
-                                            "</small></div></div>"
+                                            '</span></a><small class="text-muted">Stok: ' +
+                                            o + " " + z + "</small></div></div>"
                                         );
                                     },
                                 },
                                 {
-                                    targets: 4,
-                                    title: "Status",
+                                    targets: 2,
+                                    responsivePriority: 4,
+                                    render: function(e, t, a, n) {
+                                        var s = a.stok_bahan,
+                                            o = a.satuan_bahan;
+                                        return (s + " " + o);
+                                    },
+                                },
+                                {
+                                    targets: 3,
+                                    responsivePriority: 4,
                                     searchable: !1,
                                     orderable: !1,
                                     render: function(e, t, a, n) {
-                                        var s = a.status;
+                                        var s = a.status_bahan;
                                         var status = "";
                                         var checked = "checked"
 
@@ -291,7 +305,7 @@
                                     searchable: !1,
                                     orderable: !1,
                                     render: function(e, t, a, n) {
-                                        var s = "/kelola_pengguna/delete/" + a.id;
+                                        var s = "/inventori/delete/" + a.id;
 
                                         return (
                                             '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon btn-edit" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEditUser" data-name="' +
@@ -308,7 +322,7 @@
                                 }
                             ],
                             order: [
-                                [1, "asc"]
+                                [1, "desc"]
                             ],
                             dom: '<"row mx-2"<"col-md-2"<"me-3"l>><"col-md-10"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-end flex-md-row flex-column mb-3 mb-md-0"fB>>>t<"row mx-2"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
                             language: {
@@ -325,7 +339,7 @@
                                             text: '<i class="bx bx-printer me-2" ></i>Print',
                                             className: "dropdown-item",
                                             exportOptions: {
-                                                columns: [1, 2, 3],
+                                                columns: [0, 1, 2, 3],
                                                 format: {
                                                     body: function(e, t, a) {
                                                         var n;
@@ -375,7 +389,7 @@
                                             text: '<i class="bx bx-file me-2" ></i>Csv',
                                             className: "dropdown-item",
                                             exportOptions: {
-                                                columns: [1, 2, 3],
+                                                columns: [0, 1, 2, 3],
                                                 format: {
                                                     body: function(e, t, a) {
                                                         var n;
@@ -413,7 +427,7 @@
                                             text: '<i class="bx bxs-file-export me-2"></i>Excel',
                                             className: "dropdown-item",
                                             exportOptions: {
-                                                columns: [1, 2, 3],
+                                                columns: [0, 1, 2, 3],
                                                 format: {
                                                     body: function(e, t, a) {
                                                         var n;
@@ -451,7 +465,7 @@
                                             text: '<i class="bx bxs-file-pdf me-2"></i>Pdf',
                                             className: "dropdown-item",
                                             exportOptions: {
-                                                columns: [1, 2, 3],
+                                                columns: [0, 1, 2, 3],
                                                 format: {
                                                     body: function(e, t, a) {
                                                         var n;
@@ -489,7 +503,7 @@
                                             text: '<i class="bx bx-copy me-2" ></i>Copy',
                                             className: "dropdown-item",
                                             exportOptions: {
-                                                columns: [1, 2, 3],
+                                                columns: [0, 1, 2, 3],
                                                 format: {
                                                     body: function(e, t, a) {
                                                         var n;
@@ -525,7 +539,7 @@
                                     ]
                                 },
                                 {
-                                    text: '<i class="bx bx-plus me-0 me-lg-2"></i><span class="d-none d-lg-inline-block">Tambah Pengguna Baru</span>',
+                                    text: '<i class="bx bx-plus me-0 me-lg-2"></i><span class="d-none d-lg-inline-block">Tambah Bahan Baku</span>',
                                     className: "add-new btn btn-primary",
                                     attr: {
                                         "data-bs-toggle": "offcanvas",
@@ -562,39 +576,6 @@
                                     }
                                 }
                             },
-                            initComplete: function() {
-                                this.api()
-                                    .columns(3)
-                                    .every(function() {
-                                        var t = this,
-                                            a = $(
-                                                '<select id="UserRole" class="form-select text-capitalize"><option value=""> Select Role </option></select>'
-                                            )
-                                            .appendTo(".user_role")
-                                            .on("change", function() {
-                                                var e = $.fn.dataTable.util.escapeRegex(
-                                                    $(this).val()
-                                                );
-                                                t.search(
-                                                    e ? "^" + e + "$" : "",
-                                                    !0,
-                                                    !1
-                                                ).draw();
-                                            });
-                                        t.data()
-                                            .unique()
-                                            .sort()
-                                            .each(function(e, t) {
-                                                a.append(
-                                                    '<option value="' +
-                                                    e +
-                                                    '">' +
-                                                    e +
-                                                    "</option>"
-                                                );
-                                            });
-                                    })
-                            }
                         })),
                         $(".datatables-users tbody").on("click", ".delete-record", function(e) {
 
@@ -683,7 +664,7 @@
 
 
                             $.ajax({
-                                url: '/kelola_pengguna/update_status/' + id,
+                                url: '/inventori/update_status/' + id,
                                 method: 'GET',
                                 success: function(response) {
                                     // Handle success response

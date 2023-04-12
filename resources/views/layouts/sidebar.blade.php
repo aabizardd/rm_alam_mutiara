@@ -1,6 +1,6 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo ">
-        <a href="index-2.html" class="app-brand-link">
+        <a href="{{ route('home') }}" class="app-brand-link">
 
             <span class="app-brand-text demo menu-text fw-bold ms-1" style="font-size: 25px">Alam Mutiara</span>
         </a>
@@ -15,32 +15,31 @@
 
     <div class="menu-inner-shadow"></div>
 
-    @if (Auth::user()->role == 'admin')
-        <ul class="menu-inner py-1">
+    <ul class="menu-inner py-1">
 
-            {{-- <li class="menu-item active">
-        <a href="javascript:void(0);" class="menu-link menu-toggle">
-            <i class="menu-icon tf-icons bx bx-home-circle"></i>
-            <div data-i18n="Dashboards">Dashboards</div>
-        </a>
-        <ul class="menu-sub">
-            <li class="menu-item">
-                <a href="index-2.html" class="menu-link">
-                    <div data-i18n="Analytics">
-                        Analytics
-                    </div>
-                </a>
-            </li>
-            <li class="menu-item active">
-                <a href="dashboards-ecommerce.html" class="menu-link">
-                    <div data-i18n="eCommerce">
-                        eCommerce
-                    </div>
-                </a>
-            </li>
-        </ul>
-    </li> --}}
-
+        {{-- <li class="menu-item active">
+    <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-home-circle"></i>
+        <div data-i18n="Dashboards">Dashboards</div>
+    </a>
+    <ul class="menu-sub">
+        <li class="menu-item">
+            <a href="index-2.html" class="menu-link">
+                <div data-i18n="Analytics">
+                    Analytics
+                </div>
+            </a>
+        </li>
+        <li class="menu-item active">
+            <a href="dashboards-ecommerce.html" class="menu-link">
+                <div data-i18n="eCommerce">
+                    eCommerce
+                </div>
+            </a>
+        </li>
+    </ul>
+</li> --}}
+        @if (Auth::user()->role == 'admin')
             <!-- Dashboards -->
             <li class="menu-item <?= Request::segment(1) == 'home' ? 'active' : '' ?>">
                 <a href="{{ route('home') }}" class="menu-link">
@@ -58,10 +57,25 @@
                     <div data-i18n="Kelola Pengguna">Kelola Pengguna</div>
                 </a>
             </li>
+        @elseif(Auth::user()->role == 'gudang')
+            <li class="menu-item <?= Request::segment(1) == 'home' ? 'active' : '' ?>">
+                <a href="{{ route('home') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                    <div data-i18n="Beranda">Beranda</div>
+                </a>
 
-        </ul>
-    @endif
+            </li>
 
 
+            <li class="menu-item <?= Request::segment(1) == 'inventori' ? 'active' : '' ?>">
+                <a href="{{ route('inventori') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-basket"></i>
+                    <div data-i18n="Bahan Baku">Bahan Baku</div>
+                </a>
+
+            </li>
+        @endif
+
+    </ul>
 
 </aside>

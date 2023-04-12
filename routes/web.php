@@ -32,9 +32,22 @@ Route::prefix('kelola_pengguna')->group(function () {
     Route::get('delete/{id}', [App\Http\Controllers\KelolaPenggunaController::class, 'destroy'])->name('kelola_pengguna.delete');
     Route::post('store', [App\Http\Controllers\KelolaPenggunaController::class, 'store'])->name('kelola_pengguna.store');
     Route::post('update', [App\Http\Controllers\KelolaPenggunaController::class, 'update'])->name('kelola_pengguna.update');
+    Route::get('update_status/{id}', [App\Http\Controllers\KelolaPenggunaController::class, 'update_status'])->name('kelola_pengguna.update_status');
 
 });
 
 Route::prefix('profile')->group(function () {
     Route::get('/', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile');
+    Route::post('update', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    Route::post('hapus_akun', [App\Http\Controllers\ProfileController::class, 'hapus_akun'])->name('profile.hapus_akun');
+    Route::get('update_password', [App\Http\Controllers\ProfileController::class, 'update_password'])->name('profile.update_password');
+    Route::post('edit_pw', [App\Http\Controllers\ProfileController::class, 'edit_pw'])->name('profile.edit_pw');
+
+});
+
+Route::prefix('inventori')->group(function () {
+    Route::get('/', [App\Http\Controllers\InventoryController::class, 'index'])->name('inventori');
+    Route::get('get_all_inventories', [App\Http\Controllers\InventoryController::class, 'get_all_inventories'])->name('inventori.get_all_inventories');
+    Route::get('update_status/{id}', [App\Http\Controllers\InventoryController::class, 'update_status'])->name('inventori.update_status');
+    Route::get('delete/{id}', [App\Http\Controllers\InventoryController::class, 'delete'])->name('inventori.delete');
 });

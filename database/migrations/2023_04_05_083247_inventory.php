@@ -13,15 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('inventories', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('username')->unique();
-            $table->string('password');
-            $table->string('role');
-            $table->string('avatar')->default('20.png');
-            $table->integer('status')->default(1);
-            $table->rememberToken();
+            $table->string('nama_bahan');
+            $table->string('gambar_bahan')->default('default.jpg');
+            $table->integer('stok_bahan');
+            $table->string('satuan_bahan');
+            $table->integer('status_bahan')->default(1);
             $table->timestamps();
         });
     }
@@ -33,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('inventories');
     }
 };
