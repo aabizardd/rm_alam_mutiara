@@ -50,4 +50,6 @@ Route::prefix('inventori')->group(function () {
     Route::get('get_all_inventories', [App\Http\Controllers\InventoryController::class, 'get_all_inventories'])->name('inventori.get_all_inventories');
     Route::get('update_status/{id}', [App\Http\Controllers\InventoryController::class, 'update_status'])->name('inventori.update_status');
     Route::get('delete/{id}', [App\Http\Controllers\InventoryController::class, 'delete'])->name('inventori.delete');
+    Route::post('store', [App\Http\Controllers\InventoryController::class, 'store'])->name('inventori.store');
+    Route::post('update', [App\Http\Controllers\InventoryController::class, 'update'])->name('inventori.update');
 });

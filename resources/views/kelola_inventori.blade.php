@@ -95,8 +95,8 @@
                                 </table>
                             </div>
 
-                            {{-- @include('offcanvas.edit_user')
-                            @include('offcanvas.add_new_user') --}}
+                            @include('offcanvas.edit_inventory')
+                            @include('offcanvas.add_new_inventory')
 
                         </div>
                     </div>
@@ -246,7 +246,7 @@
                                                 ][Math.floor(6 * Math.random())] +
                                                 '">' +
                                                 (l = (
-                                                    ((l = (s = a.full_name).match(
+                                                    ((l = (s = a.nama_bahan).match(
                                                             /\b\w/g) || []).shift() ||
                                                         "") + (l.pop() || "")
                                                 ).toUpperCase()) +
@@ -308,13 +308,12 @@
                                         var s = "/inventori/delete/" + a.id;
 
                                         return (
-                                            '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon btn-edit" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEditUser" data-name="' +
-                                            a.name +
-                                            '" data-username="' + a.username +
-                                            '" data-role="' + a.role +
-                                            '" data-avatar="' + a.avatar +
+                                            '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon btn-edit" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEditUser" data-gambar="' +
+                                            a.gambar_bahan +
+                                            '" data-nama="' + a.nama_bahan +
+                                            '" data-stok="' + a.stok_bahan +
                                             '" data-id="' + a.id +
-                                            '" data-password="' + a.password +
+                                            '" data-satuan="' + a.satuan_bahan +
                                             '"><i class="bx bx-edit"></i></button><a class="btn btn-sm btn-icon delete-record" href="' +
                                             s + '"><i class="bx bx-trash"></i></a>'
                                         );
@@ -619,26 +618,34 @@
                         $(".datatables-users tbody").on("click", ".btn-edit", function(e) {
 
 
-                            $('#editUserForm')[0].reset();
 
-                            var name = $(this).data('name');
-                            var username = $(this).data('username');
-                            var role = $(this).data('role');
-                            var avatar = $(this).data('avatar');
+                            // $('#editUserForm')[0].reset();
+
+                            var gambar = $(this).data('gambar');
+                            var stok = $(this).data('stok');
+                            var nama = $(this).data('nama');
+                            var satuan = $(this).data('satuan');
                             var id = $(this).data('id');
-                            var password = $(this).data('password');
+                            // var username = $(this).data('username');
+                            // var role = $(this).data('role');
+                            // var avatar = $(this).data('avatar');
+                            // var id = $(this).data('id');
+                            // var password = $(this).data('password');
 
-                            $(".offcanvas-body #id_user").val(id);
-                            $(".offcanvas-body #avatar_old").val(avatar);
-                            $(".offcanvas-body #password_old").val(password);
-                            $(".offcanvas-body #username").val(username);
-                            $(".offcanvas-body #name").val(name);
-                            $(".offcanvas-body #role").val(role).change();
-                            $(".offcanvas-body .img-preview").attr("src",
-                                "{{ asset('/') }}assets/img/avatars/" + avatar);
+                            // $(".offcanvas-body #id_user").val(id);
+                            // $(".offcanvas-body #avatar_old").val(avatar);
+                            // $(".offcanvas-body #password_old").val(password);
+                            $(".offcanvas-body #nama_barang").val(nama);
+                            $(".offcanvas-body #stok").val(stok);
+                            $(".offcanvas-body #satuan_bahan").val(satuan);
+                            $(".offcanvas-body #id").val(id);
+                            $(".offcanvas-body .img-preview-add").attr("src",
+                                "{{ asset('/') }}assets/img/bahan/" + gambar);
                             // As pointed out in comments, 
                             // it is unnecessary to have to manually call the modal.
-                            // $('#addBookDialog').modal('show');
+                            // $('#addBookDialog').modal('show');\
+
+                            // alert(gambar)
 
                         }),
                         $(".datatables-users tbody").on("click", ".switch", function(e) {
@@ -709,50 +716,46 @@
                         }),
                         FormValidation.formValidation(t, {
                             fields: {
-                                name: {
+                                nama_barang: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Masukkan nama lengkap pengguna"
+                                            message: "Masukkan nama barang"
                                         }
                                     }
                                 },
-                                username: {
+                                stok: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Masukkan username pengguna"
-                                        }
-                                    }
-                                },
-                                avatar: {
-                                    validators: {
-                                        notEmpty: {
-                                            message: "Pilih foto terlebih"
-                                        }
-                                    }
-                                },
-                                password: {
-                                    validators: {
-                                        notEmpty: {
-                                            message: "Please enter your password"
-                                        }
-                                    }
-                                },
-                                confirm_password: {
-                                    validators: {
-                                        notEmpty: {
-                                            message: "Please confirm password"
+                                            message: "Masukkan jumlah stok"
                                         },
-                                        identical: {
-                                            compare: function() {
-                                                return t.querySelector(
-                                                    '[name="password"]'
-                                                ).value;
-                                            },
-                                            message: "The password and its confirm are not the same"
+                                        numeric: {
+                                            message: "Masukkan angka untuk jumlah stok"
+                                        },
+                                        between: {
+                                            min: 1,
+                                            max: 10000,
+                                            message: "Jumlah stok harus di antara 1 dan 10.000"
+                                        }
+
+                                    }
+                                },
+                                gambar_bahan: {
+                                    validators: {
+                                        file: {
+                                            maxSize: 10 * 1024 * 1024, // 10 MB
+                                            minSize: 1024, // 1 KB
+                                            messageExtension: 'Format file tidak sesuai',
+                                            messageSize: 'Ukuran file harus di antara 1 KB dan 10 MB'
                                         }
                                     }
                                 },
-
+                                satuan_bahan: {
+                                    validators: {
+                                        notEmpty: {
+                                            message: "Masukkan satuan bahan"
+                                        }
+                                    }
+                                },
                             },
                             plugins: {
                                 trigger: new FormValidation.plugins.Trigger(),
@@ -795,18 +798,6 @@
                                     }
                                 },
 
-                                confirm_password: {
-                                    validators: {
-                                        identical: {
-                                            compare: function() {
-                                                return t.querySelector(
-                                                    '[name="password"]'
-                                                ).value;
-                                            },
-                                            message: "The password and its confirm are not the same"
-                                        }
-                                    }
-                                },
 
                             },
                             plugins: {
