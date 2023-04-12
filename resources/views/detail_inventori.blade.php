@@ -17,9 +17,12 @@
             @include('layouts.sidebar')
             <!-- / Menu -->
 
+
             <!-- Layout container -->
             <div class="layout-page">
                 <!-- Navbar -->
+
+
 
                 <nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar">
                     <div class="container-fluid">
@@ -44,12 +47,20 @@
                 <div class="content-wrapper">
                     <!-- Content -->
 
+
                     <div class="container-xxl flex-grow-1 container-p-y">
+
+
+                        <a class="btn btn-danger mb-3" href="{{ route('inventori') }}"><i
+                                class="bx bx-arrow-back me-0 me-lg-2"></i><span
+                                class="d-none d-lg-inline-block">Kembali</span></a>
 
                         <!-- Users List Table -->
                         <div class="card">
                             <div class="card-header border-bottom">
-                                <h5 class="card-title">List Bahan Baku</h5>
+                                <h5 class="card-title">Detail Bahan Baku</h5>
+
+                                {{-- <h1>asdsad</h1> --}}
 
                                 {{-- @if ($errors->any())
                                     <div class="alert alert-danger alert-dismissible" role="alert">
@@ -95,8 +106,8 @@
                                 </table>
                             </div>
 
-                            @include('offcanvas.edit_inventory')
-                            @include('offcanvas.add_new_inventory')
+                            {{-- @include('offcanvas.edit_inventory') --}}
+                            {{-- @include('offcanvas.add_new_inventory') --}}
 
                         </div>
                     </div>
@@ -226,7 +237,6 @@
                                             o = a.stok_bahan,
                                             l = a.gambar_bahan;
                                         z = a.satuan_bahan;
-                                        r = "/inventori/detail/" + a.id;
                                         return (
                                             '<div class="d-flex justify-content-start align-items-center user-name"><div class="avatar-wrapper"><div class="avatar avatar-sm me-3">' +
                                             (l ?
@@ -539,13 +549,16 @@
                                     ]
                                 },
                                 {
-                                    text: '<i class="bx bx-plus me-0 me-lg-2"></i><span class="d-none d-lg-inline-block">Tambah Bahan Baku</span>',
+                                    text: '<i class="bx bx-plus me-0 me-lg-2"></i><span class="d-none d-lg-inline-block">Kelola Stok</span>',
                                     className: "add-new btn btn-primary",
                                     attr: {
                                         "data-bs-toggle": "offcanvas",
                                         "data-bs-target": "#offcanvasAddUser"
                                     }
-                                }
+                                },
+
+
+
                             ],
                             responsive: {
                                 details: {

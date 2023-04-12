@@ -32,12 +32,6 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label" for="stok">Stok</label>
-                <input type="number" class="form-control" id="stok" placeholder="Beras" name="stok"
-                    value="{{ old('stok') }}" />
-            </div>
-
-            <div class="mb-3">
                 <label class="form-label" for="satuan_bahan">Satuan Bahan</label>
                 <input type="text" class="form-control" id="satuan_bahan" placeholder="Contoh: Kg"
                     name="satuan_bahan" value="{{ old('satuan_bahan') }}" />

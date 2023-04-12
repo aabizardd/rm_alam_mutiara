@@ -138,7 +138,6 @@ class InventoryController extends Controller
 
         $data = [
             'nama_bahan' => $request->nama_barang,
-            'stok_bahan' => $request->stok,
             'satuan_bahan' => $request->satuan_bahan,
         ];
 
@@ -156,6 +155,17 @@ class InventoryController extends Controller
         $inventory->update($data);
 
         return redirect()->back()->with(['success' => 'Data Bahan Baku Berhasil Diupdate!']);
+
+    }
+
+    public function detail($id)
+    {
+
+        $data = [
+            'title' => 'Detail Inventori - Aplikasi Pengelolaan RM Alam Mutiara',
+        ];
+
+        return view('detail_inventori', $data);
 
     }
 
