@@ -60,6 +60,44 @@
                             <div class="card-header border-bottom">
                                 <h5 class="card-title">Detail Bahan Baku</h5>
 
+                                <div class="row">
+
+
+                                    <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4 col-6 mb-4">
+                                        <div class="card">
+                                            <div class="card-body text-center">
+                                                <div class="avatar avatar-md mx-auto mb-3">
+                                                    <span class="avatar-initial rounded-circle bg-label-info">
+                                                        <img src="{{ asset('/') }}assets/img/bahan/{{ $inventory->gambar_bahan }}"
+                                                            alt="Card image cap" style="border-radius: 100%" /></span>
+                                                </div>
+                                                <span class="d-block mb-1 text-nowrap">Nama Bahan</span>
+                                                <h4 class="mb-0">{{ $inventory->nama_bahan }}</h4>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4 col-6 mb-4">
+                                        <div class="card">
+                                            <div class="card-body text-center">
+                                                <div class="avatar avatar-md mx-auto mb-3">
+                                                    <span class="avatar-initial rounded-circle bg-label-info"><i
+                                                            class='bx bxs-cabinet'></i></span>
+                                                </div>
+                                                <span class="d-block mb-1 text-nowrap">Stok Bahan</span>
+                                                <h4 class="mb-0">
+                                                    {{ $inventory->stok_bahan . ' ' . $inventory->satuan_bahan }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+
+
                                 {{-- <h1>asdsad</h1> --}}
 
                                 {{-- @if ($errors->any())
@@ -107,7 +145,7 @@
                             </div>
 
                             {{-- @include('offcanvas.edit_inventory') --}}
-                            {{-- @include('offcanvas.add_new_inventory') --}}
+                            @include('offcanvas.kelola_stok')
 
                         </div>
                     </div>
@@ -730,10 +768,17 @@
                         }),
                         FormValidation.formValidation(t, {
                             fields: {
-                                nama_barang: {
+                                keterangan: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Masukkan nama barang"
+                                            message: "Masukkan keterangan"
+                                        }
+                                    }
+                                },
+                                status: {
+                                    validators: {
+                                        notEmpty: {
+                                            message: "Masukkan status kegunaan stok barang"
                                         }
                                     }
                                 },
@@ -753,23 +798,7 @@
 
                                     }
                                 },
-                                gambar_bahan: {
-                                    validators: {
-                                        file: {
-                                            maxSize: 10 * 1024 * 1024, // 10 MB
-                                            minSize: 1024, // 1 KB
-                                            messageExtension: 'Format file tidak sesuai',
-                                            messageSize: 'Ukuran file harus di antara 1 KB dan 10 MB'
-                                        }
-                                    }
-                                },
-                                satuan_bahan: {
-                                    validators: {
-                                        notEmpty: {
-                                            message: "Masukkan satuan bahan"
-                                        }
-                                    }
-                                },
+
                             },
                             plugins: {
                                 trigger: new FormValidation.plugins.Trigger(),
@@ -843,6 +872,17 @@
     @endif
 
 
+    @if ($message = Session::get('error'))
+        <script>
+            swal({
+                title: "{{ $message }}",
+                icon: "error",
+                text: "Terjadi kesalahan. Silakan coba lagi nanti.",
+                button: "Ok!",
+            });
+        </script>
+    @endif
+
 
     <script>
         function preview_img() {
@@ -885,12 +925,4 @@
             alert("Handler for .click() called.");
         });
     </script>
-
-    @if ($errors->any())
-        <script>
-            $(document).ready(function() {
-                $('#offcanvasAddUser').offcanvas('show')
-            });
-        </script>
-    @endif
 @endsection

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Inventory;
+use App\Models\InventoryUse;
 use DataTables;
 use Illuminate\Http\Request;
 
@@ -161,11 +162,62 @@ class InventoryController extends Controller
     public function detail($id)
     {
 
+        $inventory = Inventory::find($id);
+
         $data = [
             'title' => 'Detail Inventori - Aplikasi Pengelolaan RM Alam Mutiara',
+            'inventory' => $inventory,
         ];
 
         return view('detail_inventori', $data);
+
+    }
+
+    public function kelola_stok(Request $request)
+    {
+
+        $inventory = Inventory::findOrFail($request->inventory_id);
+        $status = $request->status;
+
+        // dd($status);
+
+        $stok_akhir = $inventory->stok_bahan;
+
+        if ($status == 1) {
+
+            $stok_akhir = $stok_akhir + $request->stok;
+
+        } else {
+
+            $stok_akhir = $stok_akhir - $request->stok;
+
+            if ($stok_akhir < 0) {
+
+                return redirect()->back()->with(['error' => 'Stok Bahan Baku Melebihi Batas!']);
+
+            }
+
+        }
+
+        $data_inventory_use = [
+            'id_inventory' => $request->inventory_id,
+            'stok_berubah' => $request->stok,
+            'status' => $request->status,
+            'keterangan' => $request->keterangan,
+            'id_user' => $request->id_user,
+        ];
+
+        $data_inventory = [
+            'stok_bahan' => $stok_akhir,
+        ];
+
+        // dd($stok_akhir);
+
+        $inventory->update($data_inventory);
+
+        InventoryUse::create($data_inventory_use);
+
+        return redirect()->back()->with(['success' => 'Data Stok Berhasil Diupdate!']);
 
     }
 
