@@ -162,11 +162,14 @@ class InventoryController extends Controller
     public function detail($id)
     {
 
+        $request = Request::capture();
+        $segments = $request->segments();
         $inventory = Inventory::find($id);
 
         $data = [
             'title' => 'Detail Inventori - Aplikasi Pengelolaan RM Alam Mutiara',
             'inventory' => $inventory,
+            'segments' => $segments,
         ];
 
         return view('detail_inventori', $data);
@@ -205,6 +208,8 @@ class InventoryController extends Controller
             'status' => $request->status,
             'keterangan' => $request->keterangan,
             'id_user' => $request->id_user,
+            'stok_sekarang' => $stok_akhir,
+
         ];
 
         $data_inventory = [
@@ -218,6 +223,27 @@ class InventoryController extends Controller
         InventoryUse::create($data_inventory_use);
 
         return redirect()->back()->with(['success' => 'Data Stok Berhasil Diupdate!']);
+
+    }
+
+    public function get_detail_penggunaan(Request $request, $id)
+    {
+
+        // $details = InventoryUse::get_detail($id);
+
+        // dd($details);
+
+        if ($request->ajax()) {
+            $data = InventoryUse::get_detail($id);
+            return datatables()->of($data)
+                ->addColumn('action', function (InventoryUse $inventory) {
+                    $actionBtn = '<a href="javascript:void(0)" class="m-1 edit btn btn-success btn-sm">Edit</a>
+                    <a href="javascript:void(0)" class="deleteuser btn btn-danger btn-sm">Delete</a>';
+                    return $actionBtn;
+                })
+                ->rawColumns(['action'])
+                ->toJson();
+        }
 
     }
 

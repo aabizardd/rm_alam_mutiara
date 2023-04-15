@@ -130,10 +130,11 @@
                                         <tr>
 
                                             <th>ID</th>
-                                            <th>Nama Bahan</th>
                                             <th>Stok</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
+                                            <th>Gudang</th>
+                                            <th>Keterangan</th>
+                                            <th>Tanggal Kelola</th>
+                                            <th>Sisa Stok</th>
 
                                         </tr>
                                     </thead>
@@ -195,6 +196,9 @@
     <script>
         $(document).ready(function() {
             $(function() {
+
+                    var segment3 = "{{ $segments[2] }}";
+                    // alert(segment3)
                     let t, a, n;
                     n = (isDarkStyle ?
                         ((t = config.colors_dark.borderColor),
@@ -229,23 +233,30 @@
                         }),
                         s.length &&
                         (e = s.DataTable({
-                            ajax: "{{ route('inventori.get_all_inventories') }}",
+
+
+                            ajax: "/inventori/get_detail_penggunaan/" + segment3,
                             columns: [{
                                     data: "id",
                                 }, {
-                                    data: 'nama_bahan',
-                                    name: 'nama_bahan'
+                                    data: 'stok_berubah',
+                                    name: 'stok'
                                 },
                                 {
-                                    data: 'stok_bahan',
-                                    name: 'stok_bahan'
+                                    data: 'name',
+                                    name: 'gudang'
                                 },
                                 {
-                                    data: 'status_bahan',
-                                    name: 'status_bahan',
+                                    data: 'keterangan',
+                                    name: 'keterangan',
                                 },
                                 {
-                                    data: 'action',
+                                    data: 'created_at',
+                                    name: 'created_at',
+                                },
+                                {
+                                    data: 'stok_sekarang',
+                                    name: 'stok',
                                 },
                             ],
                             columnDefs: [{
@@ -271,103 +282,53 @@
                                     targets: 1,
                                     responsivePriority: 4,
                                     render: function(e, t, a, n) {
-                                        var s = a.nama_bahan,
-                                            o = a.stok_bahan,
-                                            l = a.gambar_bahan;
-                                        z = a.satuan_bahan;
-                                        return (
-                                            '<div class="d-flex justify-content-start align-items-center user-name"><div class="avatar-wrapper"><div class="avatar avatar-sm me-3">' +
-                                            (l ?
-                                                '<img src="' +
-                                                assetsPath +
-                                                "img/bahan/" +
-                                                l +
-                                                '" alt="Avatar" class="rounded-circle">' :
-                                                '<span class="avatar-initial rounded-circle bg-label-' +
-                                                [
-                                                    "success",
-                                                    "danger",
-                                                    "warning",
-                                                    "info",
-                                                    "dark",
-                                                    "primary",
-                                                    "secondary",
-                                                ][Math.floor(6 * Math.random())] +
-                                                '">' +
-                                                (l = (
-                                                    ((l = (s = a.nama_bahan).match(
-                                                            /\b\w/g) || []).shift() ||
-                                                        "") + (l.pop() || "")
-                                                ).toUpperCase()) +
-                                                "</span>") +
-                                            '</div></div><div class="d-flex flex-column"><a href="' +
-                                            r +
-                                            '" class="text-body text-truncate"><span class="fw-semibold">' +
-                                            s +
-                                            '</span></a><small class="text-muted">Stok: ' +
-                                            o + " " + z + "</small></div></div>"
-                                        );
-                                    },
-                                },
-                                {
-                                    targets: 2,
-                                    responsivePriority: 4,
-                                    render: function(e, t, a, n) {
-                                        var s = a.stok_bahan,
-                                            o = a.satuan_bahan;
-                                        return (s + " " + o);
-                                    },
-                                },
-                                {
-                                    targets: 3,
-                                    responsivePriority: 4,
-                                    searchable: !1,
-                                    orderable: !1,
-                                    render: function(e, t, a, n) {
-                                        var s = a.status_bahan;
-                                        var status = "";
-                                        var checked = "checked"
+                                        var s = a.status;
+                                        var o = a.stok_berubah;
 
+                                        var hasil = "";
                                         if (s == 1) {
-                                            status = "Aktif";
+                                            hasil =
+                                                " <i class='bx bx-trending-up' style='color: green'></i>";
                                         } else {
-                                            checked = "";
-                                            status = "Tidak aktif";
+                                            hasil =
+                                                " <i class='bx bx-trending-down' style='color: red'></i>";
                                         }
 
-                                        // return (
-                                        //     '<span class = "badge rounded-pill bg-' +
-                                        //     badge + '">' + status + '</span>'
-                                        // );
 
-                                        return ('<label class="switch"><input data-id="' + a
-                                            .id +
-                                            '" id="activate-acc" type="checkbox" class="switch-input"' +
-                                            checked +
-                                            '/><span class="switch-toggle-slider"><span class="switch-on"></span><span class="switch-off"></span></span><span class="switch-label switch-activate" id="switch-activate" >' +
-                                            status + '</span></label>')
+                                        return ("<span>" + o + "</span>" + hasil);
+                                    },
+                                },
+
+                                {
+                                    targets: 4,
+                                    render: function(e, t, a, n) {
+                                        var s = a.created_at;
+                                        var date = new Date(s);
+
+                                        // Format the date with the time and the month name
+                                        var formatter = new Intl.DateTimeFormat('id-ID', {
+                                            year: 'numeric',
+                                            month: 'long',
+                                            day: 'numeric',
+                                            hour: 'numeric',
+                                            minute: 'numeric',
+                                            hour12: false
+                                        });
+                                        var formattedDate = formatter.format(date);
+
+                                        return formattedDate;
                                     },
                                 },
                                 {
                                     targets: -1,
-                                    title: "Actions",
-                                    searchable: !1,
-                                    orderable: !1,
+                                    responsivePriority: 4,
                                     render: function(e, t, a, n) {
-                                        var s = "/inventori/delete/" + a.id;
-
-                                        return (
-                                            '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon btn-edit" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEditUser" data-gambar="' +
-                                            a.gambar_bahan +
-                                            '" data-nama="' + a.nama_bahan +
-                                            '" data-stok="' + a.stok_bahan +
-                                            '" data-id="' + a.id +
-                                            '" data-satuan="' + a.satuan_bahan +
-                                            '"><i class="bx bx-edit"></i></button><a class="btn btn-sm btn-icon delete-record" href="' +
-                                            s + '"><i class="bx bx-trash"></i></a>'
-                                        );
+                                        var s = a.stok_sekarang + " " + a.satuan_bahan;
+                                        // o = a.satuan_bahan;
+                                        return (s.toString());
                                     },
-                                }
+                                },
+
                             ],
                             order: [
                                 [1, "desc"]
@@ -387,7 +348,7 @@
                                             text: '<i class="bx bx-printer me-2" ></i>Print',
                                             className: "dropdown-item",
                                             exportOptions: {
-                                                columns: [0, 1, 2, 3],
+                                                columns: [0, 1, 2, 3, 4, 5],
                                                 format: {
                                                     body: function(e, t, a) {
                                                         var n;
@@ -437,7 +398,7 @@
                                             text: '<i class="bx bx-file me-2" ></i>Csv',
                                             className: "dropdown-item",
                                             exportOptions: {
-                                                columns: [0, 1, 2, 3],
+                                                columns: [0, 1, 2, 3, 4, 5],
                                                 format: {
                                                     body: function(e, t, a) {
                                                         var n;
@@ -475,7 +436,7 @@
                                             text: '<i class="bx bxs-file-export me-2"></i>Excel',
                                             className: "dropdown-item",
                                             exportOptions: {
-                                                columns: [0, 1, 2, 3],
+                                                columns: [0, 1, 2, 3, 4, 5],
                                                 format: {
                                                     body: function(e, t, a) {
                                                         var n;
@@ -513,7 +474,7 @@
                                             text: '<i class="bx bxs-file-pdf me-2"></i>Pdf',
                                             className: "dropdown-item",
                                             exportOptions: {
-                                                columns: [0, 1, 2, 3],
+                                                columns: [0, 1, 2, 3, 4, 5],
                                                 format: {
                                                     body: function(e, t, a) {
                                                         var n;
@@ -551,7 +512,7 @@
                                             text: '<i class="bx bx-copy me-2" ></i>Copy',
                                             className: "dropdown-item",
                                             exportOptions: {
-                                                columns: [0, 1, 2, 3],
+                                                columns: [0, 1, 2, 3, 4, 5],
                                                 format: {
                                                     body: function(e, t, a) {
                                                         var n;

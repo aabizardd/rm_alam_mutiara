@@ -54,4 +54,5 @@ Route::prefix('inventori')->group(function () {
     Route::post('update', [App\Http\Controllers\InventoryController::class, 'update'])->name('inventori.update');
     Route::get('detail/{id}', [App\Http\Controllers\InventoryController::class, 'detail'])->name('inventori.detail');
     Route::post('kelola_stok', [App\Http\Controllers\InventoryController::class, 'kelola_stok'])->name('inventori.kelola_stok');
+    Route::get('get_detail_penggunaan/{id}', [App\Http\Controllers\InventoryController::class, 'get_detail_penggunaan'])->name('inventori.get_detail_penggunaan');
 });

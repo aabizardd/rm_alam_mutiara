@@ -30,6 +30,8 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
+            $table->integer('stok_sekarang');
+
             $table->timestamps();
         });
     }
