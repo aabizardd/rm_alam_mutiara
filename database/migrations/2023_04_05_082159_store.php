@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('nama_toko');
             $table->text('deskripsi_toko');
             $table->text('alamat_toko');
+            $table->string('whatsapp');
             $table->integer('status_toko')->default(1);
             $table->timestamps();
         });

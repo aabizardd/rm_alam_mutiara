@@ -56,3 +56,14 @@ Route::prefix('inventori')->group(function () {
     Route::post('kelola_stok', [App\Http\Controllers\InventoryController::class, 'kelola_stok'])->name('inventori.kelola_stok');
     Route::get('get_detail_penggunaan/{id}', [App\Http\Controllers\InventoryController::class, 'get_detail_penggunaan'])->name('inventori.get_detail_penggunaan');
 });
+
+Route::prefix('toko')->group(function () {
+    Route::get('/', [App\Http\Controllers\TokoController::class, 'index'])->name('toko');
+    Route::get('get_all_store', [App\Http\Controllers\TokoController::class, 'get_all_store'])->name('toko.get_all_store');
+
+    Route::post('store', [App\Http\Controllers\TokoController::class, 'store'])->name('toko.store');
+    Route::get('update_status/{id}', [App\Http\Controllers\TokoController::class, 'update_status'])->name('toko.update_status');
+    Route::get('delete/{id}', [App\Http\Controllers\TokoController::class, 'delete'])->name('toko.delete');
+
+    Route::post('update', [App\Http\Controllers\TokoController::class, 'update'])->name('toko.update');
+});

@@ -17,12 +17,9 @@
             @include('layouts.sidebar')
             <!-- / Menu -->
 
-
             <!-- Layout container -->
             <div class="layout-page">
                 <!-- Navbar -->
-
-
 
                 <nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar">
                     <div class="container-fluid">
@@ -47,58 +44,12 @@
                 <div class="content-wrapper">
                     <!-- Content -->
 
-
                     <div class="container-xxl flex-grow-1 container-p-y">
-
-
-                        <a class="btn btn-danger mb-3" href="{{ route('inventori') }}"><i
-                                class="bx bx-arrow-back me-0 me-lg-2"></i><span
-                                class="d-none d-lg-inline-block">Kembali</span></a>
 
                         <!-- Users List Table -->
                         <div class="card">
                             <div class="card-header border-bottom">
-                                <h5 class="card-title">Detail Bahan Baku</h5>
-
-                                <div class="row">
-
-
-                                    <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4 col-6 mb-4">
-                                        <div class="card">
-                                            <div class="card-body text-center">
-                                                <div class="avatar avatar-md mx-auto mb-3">
-                                                    <span class="avatar-initial rounded-circle bg-label-info">
-                                                        <img src="{{ asset('/') }}assets/img/bahan/{{ $inventory->gambar_bahan }}"
-                                                            alt="Card image cap" style="border-radius: 100%" /></span>
-                                                </div>
-                                                <span class="d-block mb-1 text-nowrap">Nama Bahan</span>
-                                                <h4 class="mb-0">{{ $inventory->nama_bahan }}</h4>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4 col-6 mb-4">
-                                        <div class="card">
-                                            <div class="card-body text-center">
-                                                <div class="avatar avatar-md mx-auto mb-3">
-                                                    <span class="avatar-initial rounded-circle bg-label-info"><i
-                                                            class='bx bxs-cabinet'></i></span>
-                                                </div>
-                                                <span class="d-block mb-1 text-nowrap">Stok Bahan</span>
-                                                <h4 class="mb-0">
-                                                    {{ $inventory->stok_bahan . ' ' . $inventory->satuan_bahan }}</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                </div>
-
-
-
-
-                                {{-- <h1>asdsad</h1> --}}
+                                <h5 class="card-title">List Toko Pembelian</h5>
 
                                 {{-- @if ($errors->any())
                                     <div class="alert alert-danger alert-dismissible" role="alert">
@@ -130,11 +81,12 @@
                                         <tr>
 
                                             <th>ID</th>
-                                            <th>Stok</th>
-                                            <th>Gudang</th>
-                                            <th>Keterangan</th>
-                                            <th>Tanggal Kelola</th>
-                                            <th>Sisa Stok</th>
+                                            <th>Nama Toko</th>
+                                            <th>Alamat</th>
+                                            <th>Deskripsi</th>
+                                            <th>No Whatsapp</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
 
                                         </tr>
                                     </thead>
@@ -145,8 +97,8 @@
                                 </table>
                             </div>
 
-                            {{-- @include('offcanvas.edit_inventory') --}}
-                            @include('offcanvas.kelola_stok')
+                            @include('offcanvas.edit_toko')
+                            @include('offcanvas.add_new_store')
 
                         </div>
                     </div>
@@ -193,14 +145,9 @@
 
 
 
-
-
     <script>
         $(document).ready(function() {
             $(function() {
-
-                    var segment3 = "{{ $segments[2] }}";
-                    // alert(segment3)
                     let t, a, n;
                     n = (isDarkStyle ?
                         ((t = config.colors_dark.borderColor),
@@ -235,30 +182,31 @@
                         }),
                         s.length &&
                         (e = s.DataTable({
-
-
-                            ajax: "/inventori/get_detail_penggunaan/" + segment3,
+                            ajax: "{{ route('toko.get_all_store') }}",
                             columns: [{
                                     data: "id",
                                 }, {
-                                    data: 'stok_berubah',
-                                    name: 'stok'
+                                    data: 'nama_toko',
+                                    name: 'nama_toko'
                                 },
                                 {
-                                    data: 'name',
-                                    name: 'gudang'
+                                    data: 'alamat_toko',
+                                    name: 'alamat_toko'
                                 },
                                 {
-                                    data: 'keterangan',
-                                    name: 'keterangan',
+                                    data: 'deskripsi_toko',
+                                    name: 'deskripsi_toko',
                                 },
                                 {
-                                    data: 'created_at',
-                                    name: 'created_at',
+                                    data: 'whatsapp',
+                                    name: 'whatsapp',
                                 },
                                 {
-                                    data: 'stok_sekarang',
-                                    name: 'stok',
+                                    data: 'status_toko',
+                                    name: 'status_toko',
+                                },
+                                {
+                                    data: 'action',
                                 },
                             ],
                             columnDefs: [{
@@ -281,59 +229,71 @@
                                     },
                                 },
                                 {
-                                    targets: 1,
+                                    targets: 4,
                                     responsivePriority: 4,
                                     render: function(e, t, a, n) {
-                                        var s = a.status;
-                                        var o = a.stok_berubah;
-
-                                        var hasil = "";
-                                        if (s == 1) {
-                                            hasil =
-                                                " <i class='bx bx-trending-up' style='color: green'></i>";
-                                        } else {
-                                            hasil =
-                                                " <i class='bx bx-trending-down' style='color: red'></i>";
-                                        }
-
-
-                                        return ("<span>" + o + "</span>" + hasil);
+                                        var s = a.whatsapp;
+                                        // o = a.satuan_bahan;
+                                        return (s.toString() +
+                                            " <a href='https://wa.me/+62" +
+                                            s +
+                                            "' target='_blank'><i class='bx bxl-whatsapp-square' style='color:#25D366;font-size: 40px; border-radius: 50%;'></i></a>"
+                                        );
                                     },
                                 },
-
                                 {
-                                    targets: 4,
+                                    targets: 5,
+                                    responsivePriority: 4,
+                                    searchable: !1,
+                                    orderable: !1,
                                     render: function(e, t, a, n) {
-                                        var s = a.created_at;
-                                        var date = new Date(s);
+                                        var s = a.status_toko;
+                                        var status = "";
+                                        var checked = "checked"
 
-                                        // Format the date with the time and the month name
-                                        var formatter = new Intl.DateTimeFormat('id-ID', {
-                                            year: 'numeric',
-                                            month: 'long',
-                                            day: 'numeric',
-                                            hour: 'numeric',
-                                            minute: 'numeric',
-                                            hour12: false
-                                        });
-                                        var formattedDate = formatter.format(date);
+                                        if (s == 1) {
+                                            status = "Aktif";
+                                        } else {
+                                            checked = "";
+                                            status = "Tidak aktif";
+                                        }
 
-                                        return formattedDate;
+                                        // return (
+                                        //     '<span class = "badge rounded-pill bg-' +
+                                        //     badge + '">' + status + '</span>'
+                                        // );
+
+                                        return ('<label class="switch"><input data-id="' + a
+                                            .id +
+                                            '" id="activate-acc" type="checkbox" class="switch-input"' +
+                                            checked +
+                                            '/><span class="switch-toggle-slider"><span class="switch-on"></span><span class="switch-off"></span></span><span class="switch-label switch-activate" id="switch-activate" >' +
+                                            status + '</span></label>')
                                     },
                                 },
                                 {
                                     targets: -1,
-                                    responsivePriority: 4,
+                                    title: "Actions",
+                                    searchable: !1,
+                                    orderable: !1,
                                     render: function(e, t, a, n) {
-                                        var s = a.stok_sekarang + " " + a.satuan_bahan;
-                                        // o = a.satuan_bahan;
-                                        return (s.toString());
-                                    },
-                                },
+                                        var s = "/toko/delete/" + a.id;
 
+                                        return (
+                                            '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon btn-edit" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEditUser" data-deskripsi="' +
+                                            a.deskripsi_toko +
+                                            '" data-nama="' + a.nama_toko +
+                                            '" data-alamat="' + a.alamat_toko +
+                                            '" data-id="' + a.id +
+                                            '" data-whatsapp="' + a.whatsapp +
+                                            '"><i class="bx bx-edit"></i></button><a class="btn btn-sm btn-icon delete-record" href="' +
+                                            s + '"><i class="bx bx-trash"></i></a>'
+                                        );
+                                    },
+                                }
                             ],
                             order: [
-                                [1, "desc"]
+                                [0, "desc"]
                             ],
                             dom: '<"row mx-2"<"col-md-2"<"me-3"l>><"col-md-10"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-end flex-md-row flex-column mb-3 mb-md-0"fB>>>t<"row mx-2"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
                             language: {
@@ -550,16 +510,13 @@
                                     ]
                                 },
                                 {
-                                    text: '<i class="bx bx-plus me-0 me-lg-2"></i><span class="d-none d-lg-inline-block">Kelola Stok</span>',
+                                    text: '<i class="bx bx-plus me-0 me-lg-2"></i><span class="d-none d-lg-inline-block">Tambah Bahan Baku</span>',
                                     className: "add-new btn btn-primary",
                                     attr: {
                                         "data-bs-toggle": "offcanvas",
                                         "data-bs-target": "#offcanvasAddUser"
                                     }
-                                },
-
-
-
+                                }
                             ],
                             responsive: {
                                 details: {
@@ -636,10 +593,10 @@
 
                             // $('#editUserForm')[0].reset();
 
-                            var gambar = $(this).data('gambar');
-                            var stok = $(this).data('stok');
+                            var alamat = $(this).data('alamat');
+                            var deskripsi = $(this).data('deskripsi');
                             var nama = $(this).data('nama');
-                            var satuan = $(this).data('satuan');
+                            var whatsapp = $(this).data('whatsapp');
                             var id = $(this).data('id');
                             // var username = $(this).data('username');
                             // var role = $(this).data('role');
@@ -650,12 +607,12 @@
                             // $(".offcanvas-body #id_user").val(id);
                             // $(".offcanvas-body #avatar_old").val(avatar);
                             // $(".offcanvas-body #password_old").val(password);
-                            $(".offcanvas-body #nama_barang").val(nama);
-                            $(".offcanvas-body #stok").val(stok);
-                            $(".offcanvas-body #satuan_bahan").val(satuan);
+                            $(".offcanvas-body #nama_toko").val(nama);
+                            $(".offcanvas-body #alamat").val(alamat);
+                            $(".offcanvas-body #deskripsi").val(deskripsi);
                             $(".offcanvas-body #id").val(id);
-                            $(".offcanvas-body .img-preview-add").attr("src",
-                                "{{ asset('/') }}assets/img/bahan/" + gambar);
+                            $(".offcanvas-body #whatsapp").val(whatsapp);
+
                             // As pointed out in comments, 
                             // it is unnecessary to have to manually call the modal.
                             // $('#addBookDialog').modal('show');\
@@ -686,7 +643,7 @@
 
 
                             $.ajax({
-                                url: '/inventori/update_status/' + id,
+                                url: '/toko/update_status/' + id,
                                 method: 'GET',
                                 success: function(response) {
                                     // Handle success response
@@ -731,60 +688,34 @@
                         }),
                         FormValidation.formValidation(t, {
                             fields: {
-                                keterangan: {
+                                nama_toko: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Masukkan keterangan"
+                                            message: "Masukkan nama toko"
                                         }
                                     }
                                 },
-                                status: {
+                                alamat: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Masukkan status kegunaan stok barang"
+                                            message: "Masukkan alamat toko"
                                         }
                                     }
                                 },
-                                stok: {
+                                deskripsi: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Masukkan jumlah stok"
-                                        },
-                                        numeric: {
-                                            message: "Masukkan angka untuk jumlah stok"
-                                        },
-                                        between: {
-                                            min: 1,
-                                            max: 10000,
-                                            message: "Jumlah stok harus di antara 1 dan 10.000"
-                                        }
-
-                                    }
-                                },
-                                harga: {
-                                    validators: {
-                                        notEmpty: {
-                                            message: "Masukkan total harga pembelian"
-                                        },
-                                        numeric: {
-                                            message: "Masukkan angka untuk total harga pembelian"
+                                            message: "Masukkan deskripsi toko"
                                         }
                                     }
                                 },
-                                // nota: {
-                                //     validators: {
-                                //         notEmpty: {
-                                //             message: "Masukkan gambar nota"
-                                //         },
-                                //         file: {
-                                //             maxSize: 10 * 1024 * 1024, // 10 MB
-                                //             minSize: 1024, // 1 KB
-                                //             messageExtension: 'Format file tidak sesuai',
-                                //             messageSize: 'Ukuran file harus di antara 1 KB dan 10 MB'
-                                //         }
-                                //     }
-                                // },
-
+                                whatsapp: {
+                                    validators: {
+                                        notEmpty: {
+                                            message: "Masukkan nomor whatsapp toko"
+                                        }
+                                    }
+                                },
                             },
                             plugins: {
                                 trigger: new FormValidation.plugins.Trigger(),
@@ -799,9 +730,6 @@
                                 autoFocus: new FormValidation.plugins.AutoFocus()
                             }
                         });
-
-
-
                 })(), (function() {
                     // c.preventDefault();
                     var e = document.querySelectorAll(".phone-mask"),
@@ -850,9 +778,6 @@
         });
     </script>
 
-
-    <script></script>
-
     @if ($message = Session::get('success'))
         <script>
             swal({
@@ -863,17 +788,6 @@
         </script>
     @endif
 
-
-    @if ($message = Session::get('error'))
-        <script>
-            swal({
-                title: "{{ $message }}",
-                icon: "error",
-                text: "Terjadi kesalahan. Silakan coba lagi nanti.",
-                button: "Ok!",
-            });
-        </script>
-    @endif
 
 
     <script>
@@ -917,4 +831,12 @@
             alert("Handler for .click() called.");
         });
     </script>
+
+    @if ($errors->any())
+        <script>
+            $(document).ready(function() {
+                $('#offcanvasAddUser').offcanvas('show')
+            });
+        </script>
+    @endif
 @endsection

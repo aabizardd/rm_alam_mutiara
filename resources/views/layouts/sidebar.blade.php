@@ -74,6 +74,14 @@
                 </a>
 
             </li>
+
+            <li class="menu-item <?= Request::segment(1) == 'toko' ? 'active' : '' ?>">
+                <a href="{{ route('toko') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-store-alt"></i>
+                    <div data-i18n="List Toko Pembelian">List Toko Pembelian</div>
+                </a>
+
+            </li>
         @endif
 
     </ul>
