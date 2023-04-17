@@ -135,6 +135,7 @@
                                             <th>Keterangan</th>
                                             <th>Tanggal Kelola</th>
                                             <th>Sisa Stok</th>
+                                            <th>Harga</th>
 
                                         </tr>
                                     </thead>
@@ -260,6 +261,10 @@
                                     data: 'stok_sekarang',
                                     name: 'stok',
                                 },
+                                {
+                                    data: 'harga',
+                                    name: 'harga',
+                                },
                             ],
                             columnDefs: [{
                                     className: "control",
@@ -302,6 +307,30 @@
                                 },
 
                                 {
+                                    targets: 3,
+                                    responsivePriority: 4,
+                                    render: function(e, t, a, n) {
+                                        var keterangan = a.keterangan
+
+                                        var target = '/assets/img/nota/'
+                                        var nota = a.nota
+
+                                        var result = "<p>" + keterangan +
+                                            "</p>"
+
+                                        if (a.status == 1) {
+                                            result += "<a class='btn btn-primary' href='" +
+                                                target + nota +
+                                                "' target='_blank' download>Lihat Nota</a>"
+                                        }
+                                        // o = a.satuan_bahan;
+
+
+                                        return (result);
+                                    },
+                                },
+
+                                {
                                     targets: 4,
                                     render: function(e, t, a, n) {
                                         var s = a.created_at;
@@ -322,12 +351,27 @@
                                     },
                                 },
                                 {
-                                    targets: -1,
+                                    targets: 5,
                                     responsivePriority: 4,
                                     render: function(e, t, a, n) {
                                         var s = a.stok_sekarang + " " + a.satuan_bahan;
                                         // o = a.satuan_bahan;
                                         return (s.toString());
+                                    },
+                                },
+                                {
+                                    targets: 6,
+                                    responsivePriority: 4,
+                                    render: function(e, t, a, n) {
+                                        var angka = a.harga
+                                        // o = a.satuan_bahan;
+                                        var reverse = angka.toString().split('').reverse().join(
+                                            '');
+                                        var ribuan = reverse.match(/\d{1,3}/g);
+                                        ribuan = ribuan.join('.').split('').reverse().join('');
+                                        // return 'Rp ' + ribuan;
+
+                                        return ('Rp' + ribuan);
                                     },
                                 },
 
@@ -350,7 +394,7 @@
                                             text: '<i class="bx bx-printer me-2" ></i>Print',
                                             className: "dropdown-item",
                                             exportOptions: {
-                                                columns: [0, 1, 2, 3, 4, 5],
+                                                columns: [0, 1, 2, 3, 4, 5, 6],
                                                 format: {
                                                     body: function(e, t, a) {
                                                         var n;
@@ -400,7 +444,7 @@
                                             text: '<i class="bx bx-file me-2" ></i>Csv',
                                             className: "dropdown-item",
                                             exportOptions: {
-                                                columns: [0, 1, 2, 3, 4, 5],
+                                                columns: [0, 1, 2, 3, 4, 5, 6],
                                                 format: {
                                                     body: function(e, t, a) {
                                                         var n;
@@ -438,7 +482,7 @@
                                             text: '<i class="bx bxs-file-export me-2"></i>Excel',
                                             className: "dropdown-item",
                                             exportOptions: {
-                                                columns: [0, 1, 2, 3, 4, 5],
+                                                columns: [0, 1, 2, 3, 4, 5, 6],
                                                 format: {
                                                     body: function(e, t, a) {
                                                         var n;
@@ -476,7 +520,7 @@
                                             text: '<i class="bx bxs-file-pdf me-2"></i>Pdf',
                                             className: "dropdown-item",
                                             exportOptions: {
-                                                columns: [0, 1, 2, 3, 4, 5],
+                                                columns: [0, 1, 2, 3, 4, 5, 6],
                                                 format: {
                                                     body: function(e, t, a) {
                                                         var n;
@@ -514,7 +558,7 @@
                                             text: '<i class="bx bx-copy me-2" ></i>Copy',
                                             className: "dropdown-item",
                                             exportOptions: {
-                                                columns: [0, 1, 2, 3, 4, 5],
+                                                columns: [0, 1, 2, 3, 4, 5, 6],
                                                 format: {
                                                     body: function(e, t, a) {
                                                         var n;
@@ -761,16 +805,16 @@
 
                                     }
                                 },
-                                harga: {
-                                    validators: {
-                                        notEmpty: {
-                                            message: "Masukkan total harga pembelian"
-                                        },
-                                        numeric: {
-                                            message: "Masukkan angka untuk total harga pembelian"
-                                        }
-                                    }
-                                },
+                                // harga: {
+                                //     validators: {
+                                //         notEmpty: {
+                                //             message: "Masukkan total harga pembelian"
+                                //         },
+                                //         numeric: {
+                                //             message: "Masukkan angka untuk total harga pembelian"
+                                //         }
+                                //     }
+                                // },
                                 // nota: {
                                 //     validators: {
                                 //         notEmpty: {
@@ -800,6 +844,18 @@
                             }
                         });
 
+                    $('#status').on('change', function() {
+                        var selectedValue = $(this).val();
+                        // alert(selectedValue)
+                        if (selectedValue == 1) {
+                            $('#addField').show();
+                            // Aktifkan validasi untuk field nama
+
+                        } else {
+                            $('#addField').hide();
+
+                        }
+                    });
 
 
                 })(), (function() {
@@ -917,4 +973,13 @@
             alert("Handler for .click() called.");
         });
     </script>
+
+    @if ($errors->any())
+        <script>
+            $(document).ready(function() {
+                $('#offcanvasAddUser').offcanvas('show')
+                $('#addField').show()
+            });
+        </script>
+    @endif
 @endsection

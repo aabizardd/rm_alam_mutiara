@@ -6,6 +6,7 @@ use App\Models\Inventory;
 use App\Models\InventoryUse;
 use DataTables;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class InventoryController extends Controller
 {
@@ -179,6 +180,33 @@ class InventoryController extends Controller
     public function kelola_stok(Request $request)
     {
 
+        $imageName = null;
+        $harga = 0;
+        if ($request->status == 1) {
+
+            $validator = Validator::make($request->all(), [
+                'harga' => ['required', 'numeric'],
+                'nota' => ['required', 'image', 'mimes:jpg,png,jpeg,webp,gif,svg,bmp', 'max:2048'],
+            ]);
+
+            // dd($req->name);
+
+            if ($validator->fails()) {
+                return redirect()
+                    ->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
+            $imageName = time() . '.' . $request->nota->extension();
+            $request->nota->move(public_path('assets/img/nota'), $imageName);
+            $harga = $request->harga;
+        } else {
+
+            $harga = 0;
+
+        }
+
         $inventory = Inventory::findOrFail($request->inventory_id);
         $status = $request->status;
 
@@ -209,6 +237,8 @@ class InventoryController extends Controller
             'keterangan' => $request->keterangan,
             'id_user' => $request->id_user,
             'stok_sekarang' => $stok_akhir,
+            'harga' => $harga,
+            'nota' => $imageName,
 
         ];
 

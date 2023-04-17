@@ -32,6 +32,9 @@ return new class extends Migration
 
             $table->integer('stok_sekarang');
 
+            $table->integer('harga')->default(0);
+            $table->string('nota')->nullable();
+
             $table->timestamps();
         });
     }

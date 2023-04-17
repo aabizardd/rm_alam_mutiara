@@ -16,6 +16,8 @@ class InventoryUse extends Model
         'keterangan',
         'id_user',
         'stok_sekarang',
+        'harga',
+        'nota',
     ];
 
     protected $table = 'inventory_use';

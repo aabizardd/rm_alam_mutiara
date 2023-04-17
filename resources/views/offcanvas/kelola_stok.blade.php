@@ -8,7 +8,7 @@
     </div>
     <div class="offcanvas-body mx-0 flex-grow-0">
         <form class="add-new-user pt-0 form-field" id="addNewUserForm" action="{{ url('inventori/kelola_stok') }}"
-            method="POST">
+            method="POST" enctype="multipart/form-data">
 
             @csrf
 
@@ -19,35 +19,50 @@
 
             <div class="mb-3">
                 <label class="form-label" for="stok">Jumlah Stok</label>
-                <input type="number" class="form-control" id="stok" placeholder="Beras" name="stok" />
+                <input type="number" class="form-control" id="stok" placeholder="Beras" name="stok"
+                    value="{{ old('stok') }}" />
             </div>
 
             <div class="mb-3">
                 <label class="form-label" for="status">Pilih Kegiatan</label>
                 <select id="status" class="form-select" name="status">
-                    <option value="" selected disabled>---- Pilih ----</option>
-                    <option value="1">Tambah Stok</option>
-                    <option value="0">Gunakan Stok</option>
+                    <option value="" {{ old('status') == '' ? 'selected' : '' }} disabled>---- Pilih ----</option>
+                    <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Tambah Stok</option>
+                    <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Gunakan Stok</option>
                 </select>
             </div>
 
             <div class="mb-3">
                 <label class="form-label" for="stok">Keterangan</label>
                 <input type="text" class="form-control" id="keterangan"
-                    placeholder="Contoh: Digunakan untuk membuat tahu" name="keterangan" value="" />
+                    placeholder="Contoh: Digunakan untuk membuat tahu" name="keterangan"
+                    value="{{ old('keterangan') }}" />
             </div>
 
 
-            {{-- <div class="mb-3" id="harga_inp" style="display: none;">
-                <label class="form-label" for="harga">Harga</label>
-                <input type="number" class="form-control" id="harga" name="harga" value="" />
-            </div> --}}
+            <div id="addField" style="display: none">
+                <div class="mb-3" id="harga_inp">
+                    <label class="form-label" for="harga">Harga</label>
+                    <input type="number" class="form-control" id="harga" name="harga"
+                        value="{{ old('harga') }}" />
 
-            {{-- <div class="mb-3" id="nota_inp">
+                    @error('harga')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="mb-3" id="nota_inp">
                     <label class="form-label" for="nota">Nota Pembelian</label>
                     <input type="file" class="form-control" id="nota" name="nota" value=""
                         accept="image/*" />
-                </div> --}}
+
+                    @error('nota')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+
+
 
 
 
