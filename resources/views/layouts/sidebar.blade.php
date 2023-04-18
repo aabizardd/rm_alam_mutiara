@@ -82,7 +82,57 @@
                 </a>
 
             </li>
+
+            <li class="menu-item <?= Request::segment(1) == 'menu' ? 'active' : '' ?>">
+                <a href="{{ route('menu') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-food-menu"></i>
+                    <div data-i18n="List Menu">List Menu</div>
+                </a>
+
+            </li>
+        @elseif(Auth::user()->role == 'manajer')
+            <li class="menu-item <?= Request::segment(1) == 'home' ? 'active' : '' ?>">
+                <a href="{{ route('home') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                    <div data-i18n="Beranda">Beranda</div>
+                </a>
+
+            </li>
+
+
+            <li class="menu-item <?= Request::segment(1) == 'inventori' ? 'active' : '' ?>">
+                <a href="{{ route('inventori') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-basket"></i>
+                    <div data-i18n="Bahan Baku">Bahan Baku</div>
+                </a>
+
+            </li>
+
+            <li class="menu-item <?= Request::segment(1) == 'toko' ? 'active' : '' ?>">
+                <a href="{{ route('toko') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-store-alt"></i>
+                    <div data-i18n="List Toko Pembelian">List Toko Pembelian</div>
+                </a>
+
+            </li>
+
+            <li class="menu-item <?= Request::segment(1) == 'menu' ? 'active' : '' ?>">
+                <a href="{{ route('menu') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-food-menu"></i>
+                    <div data-i18n="List Menu">List Menu</div>
+                </a>
+
+            </li>
+
+            <li class="menu-item <?= Request::segment(1) == 'kalkulator_menu' ? 'active' : '' ?>">
+                <a href="{{ route('kalkulator_menu') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-calculator"></i>
+                    <div data-i18n="Kalkulator Menu">Kalkulator Menu</div>
+                </a>
+
+            </li>
         @endif
+
 
     </ul>
 

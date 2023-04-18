@@ -49,7 +49,7 @@
                         <!-- Users List Table -->
                         <div class="card">
                             <div class="card-header border-bottom">
-                                <h5 class="card-title">List Toko Pembelian</h5>
+                                <h5 class="card-title">List Menu Makanan dan Minuman</h5>
 
                                 {{-- @if ($errors->any())
                                     <div class="alert alert-danger alert-dismissible" role="alert">
@@ -81,10 +81,9 @@
                                         <tr>
 
                                             <th>ID</th>
-                                            <th>Nama Toko</th>
-                                            <th>Alamat</th>
-                                            <th>Deskripsi</th>
-                                            <th>No Whatsapp</th>
+                                            <th>Nama Menu</th>
+                                            <th>Harga</th>
+                                            <th>Jenis</th>
                                             <th>Status</th>
                                             <th>Action</th>
 
@@ -97,8 +96,8 @@
                                 </table>
                             </div>
 
-                            @include('offcanvas.edit_toko')
-                            @include('offcanvas.add_new_store')
+                            @include('offcanvas.edit_menu')
+                            @include('offcanvas.add_new_menu')
 
                         </div>
                     </div>
@@ -143,6 +142,15 @@
         });
     </script> --}}
 
+    <script>
+        function formatRupiah(angka) {
+            var reverse = angka.toString().split('').reverse().join('');
+            var ribuan = reverse.match(/\d{1,3}/g);
+            ribuan = ribuan.join('.').split('').reverse().join('');
+            return 'Rp ' + ribuan;
+        }
+    </script>
+
 
 
     <script>
@@ -182,28 +190,24 @@
                         }),
                         s.length &&
                         (e = s.DataTable({
-                            ajax: "{{ route('toko.get_all_store') }}",
+                            ajax: "{{ route('menu.get_all_menus') }}",
                             columns: [{
-                                    data: "id",
+                                    data: "value",
                                 }, {
-                                    data: 'nama_toko',
-                                    name: 'nama_toko'
+                                    data: 'nama_menu',
+                                    name: 'nama_menu'
                                 },
                                 {
-                                    data: 'alamat_toko',
-                                    name: 'alamat_toko'
+                                    data: 'harga',
+                                    name: 'harga'
                                 },
                                 {
-                                    data: 'deskripsi_toko',
-                                    name: 'deskripsi_toko',
+                                    data: 'jenis',
+                                    name: 'jenis'
                                 },
                                 {
-                                    data: 'whatsapp',
-                                    name: 'whatsapp',
-                                },
-                                {
-                                    data: 'status_toko',
-                                    name: 'status_toko',
+                                    data: 'status',
+                                    name: 'status',
                                 },
                                 {
                                     data: 'action',
@@ -223,31 +227,69 @@
                                     targets: 0,
                                     responsivePriority: 4,
                                     render: function(e, t, a, n) {
-                                        var s = a.id;
+                                        var s = a.value;
                                         // o = a.satuan_bahan;
                                         return (s.toString());
                                     },
                                 },
                                 {
-                                    targets: 4,
+                                    targets: 1,
                                     responsivePriority: 4,
                                     render: function(e, t, a, n) {
-                                        var s = a.whatsapp;
-                                        // o = a.satuan_bahan;
-                                        return (s.toString() +
-                                            " <a href='https://wa.me/+62" +
+                                        var s = a.nama_menu,
+                                            o = a.harga,
+                                            l = a.gambar;
+                                        z = a.satuan_bahan;
+                                        r = "/inventori/detail/" + a.value;
+                                        return (
+                                            '<div class="d-flex justify-content-start align-items-center user-name"><div class="avatar-wrapper"><div class="avatar avatar-sm me-3">' +
+                                            (l ?
+                                                '<img src="' +
+                                                assetsPath +
+                                                "img/menu/" +
+                                                l +
+                                                '" alt="Avatar" class="rounded-circle">' :
+                                                '<span class="avatar-initial rounded-circle bg-label-' +
+                                                [
+                                                    "success",
+                                                    "danger",
+                                                    "warning",
+                                                    "info",
+                                                    "dark",
+                                                    "primary",
+                                                    "secondary",
+                                                ][Math.floor(6 * Math.random())] +
+                                                '">' +
+                                                (l = (
+                                                    ((l = (s = a.nama_bahan).match(
+                                                            /\b\w/g) || []).shift() ||
+                                                        "") + (l.pop() || "")
+                                                ).toUpperCase()) +
+                                                "</span>") +
+                                            '</div></div><div class="d-flex flex-column"><a href="' +
+                                            r +
+                                            '" class="text-body text-truncate"><span class="fw-semibold">' +
                                             s +
-                                            "' target='_blank'><i class='bx bxl-whatsapp-square' style='color:#25D366;font-size: 40px; border-radius: 50%;'></i></a>"
+                                            '</span></a><small class="text-muted">Harga: ' +
+                                            formatRupiah(o) + "</small></div></div>"
                                         );
                                     },
                                 },
                                 {
-                                    targets: 5,
+                                    targets: 2,
+                                    responsivePriority: 4,
+                                    render: function(e, t, a, n) {
+                                        var s = formatRupiah(a.harga)
+                                        return (s);
+                                    },
+                                },
+                                {
+                                    targets: 4,
                                     responsivePriority: 4,
                                     searchable: !1,
                                     orderable: !1,
                                     render: function(e, t, a, n) {
-                                        var s = a.status_toko;
+                                        var s = a.status;
                                         var status = "";
                                         var checked = "checked"
 
@@ -264,7 +306,7 @@
                                         // );
 
                                         return ('<label class="switch"><input data-id="' + a
-                                            .id +
+                                            .value +
                                             '" id="activate-acc" type="checkbox" class="switch-input"' +
                                             checked +
                                             '/><span class="switch-toggle-slider"><span class="switch-on"></span><span class="switch-off"></span></span><span class="switch-label switch-activate" id="switch-activate" >' +
@@ -277,15 +319,19 @@
                                     searchable: !1,
                                     orderable: !1,
                                     render: function(e, t, a, n) {
-                                        var s = "/toko/delete/" + a.id;
+                                        var s = "/menu/delete/" + a.value;
+                                        // var result = "";
+                                        // var role = "{{ Auth::user()->role }}";
+
+
 
                                         return (
-                                            '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon btn-edit" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEditUser" data-deskripsi="' +
-                                            a.deskripsi_toko +
-                                            '" data-nama="' + a.nama_toko +
-                                            '" data-alamat="' + a.alamat_toko +
-                                            '" data-id="' + a.id +
-                                            '" data-whatsapp="' + a.whatsapp +
+                                            '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon btn-edit" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEditUser" data-gambar="' +
+                                            a.gambar +
+                                            '" data-nama="' + a.nama_menu +
+                                            '" data-harga="' + a.harga +
+                                            '" data-jenis="' + a.jenis +
+                                            '" data-id="' + a.value +
                                             '"><i class="bx bx-edit"></i></button><a class="btn btn-sm btn-icon delete-record" href="' +
                                             s + '"><i class="bx bx-trash"></i></a>'
                                         );
@@ -293,7 +339,7 @@
                                 }
                             ],
                             order: [
-                                [0, "desc"]
+                                [1, "desc"]
                             ],
                             dom: '<"row mx-2"<"col-md-2"<"me-3"l>><"col-md-10"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-end flex-md-row flex-column mb-3 mb-md-0"fB>>>t<"row mx-2"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
                             language: {
@@ -310,7 +356,7 @@
                                             text: '<i class="bx bx-printer me-2" ></i>Print',
                                             className: "dropdown-item",
                                             exportOptions: {
-                                                columns: [0, 1, 2, 3, 4, 5],
+                                                columns: [0, 1, 2, 3, 4],
                                                 format: {
                                                     body: function(e, t, a) {
                                                         var n;
@@ -360,7 +406,7 @@
                                             text: '<i class="bx bx-file me-2" ></i>Csv',
                                             className: "dropdown-item",
                                             exportOptions: {
-                                                columns: [0, 1, 2, 3, 4, 5],
+                                                columns: [0, 1, 2, 3, 4],
                                                 format: {
                                                     body: function(e, t, a) {
                                                         var n;
@@ -398,7 +444,7 @@
                                             text: '<i class="bx bxs-file-export me-2"></i>Excel',
                                             className: "dropdown-item",
                                             exportOptions: {
-                                                columns: [0, 1, 2, 3, 4, 5],
+                                                columns: [0, 1, 2, 3, 4],
                                                 format: {
                                                     body: function(e, t, a) {
                                                         var n;
@@ -436,7 +482,7 @@
                                             text: '<i class="bx bxs-file-pdf me-2"></i>Pdf',
                                             className: "dropdown-item",
                                             exportOptions: {
-                                                columns: [0, 1, 2, 3, 4, 5],
+                                                columns: [0, 1, 2, 3, 4],
                                                 format: {
                                                     body: function(e, t, a) {
                                                         var n;
@@ -474,7 +520,7 @@
                                             text: '<i class="bx bx-copy me-2" ></i>Copy',
                                             className: "dropdown-item",
                                             exportOptions: {
-                                                columns: [0, 1, 2, 3, 4, 5],
+                                                columns: [0, 1, 2, 3, 4],
                                                 format: {
                                                     body: function(e, t, a) {
                                                         var n;
@@ -510,7 +556,7 @@
                                     ]
                                 },
                                 {
-                                    text: '<i class="bx bx-plus me-0 me-lg-2"></i><span class="d-none d-lg-inline-block">Tambah Toko</span>',
+                                    text: '<i class="bx bx-plus me-0 me-lg-2"></i><span class="d-none d-lg-inline-block">Tambah Menu</span>',
                                     className: "add-new btn btn-primary",
                                     attr: {
                                         "data-bs-toggle": "offcanvas",
@@ -547,6 +593,39 @@
                                     }
                                 }
                             },
+                            initComplete: function() {
+                                this.api()
+                                    .columns(3)
+                                    .every(function() {
+                                        var t = this,
+                                            a = $(
+                                                '<select id="UserRole" class="form-select text-capitalize"><option value=""> Pilih Jenis Menu </option></select>'
+                                            )
+                                            .appendTo(".user_role")
+                                            .on("change", function() {
+                                                var e = $.fn.dataTable.util.escapeRegex(
+                                                    $(this).val()
+                                                );
+                                                t.search(
+                                                    e ? "^" + e + "$" : "",
+                                                    !0,
+                                                    !1
+                                                ).draw();
+                                            });
+                                        t.data()
+                                            .unique()
+                                            .sort()
+                                            .each(function(e, t) {
+                                                a.append(
+                                                    '<option value="' +
+                                                    e +
+                                                    '">' +
+                                                    e +
+                                                    "</option>"
+                                                );
+                                            });
+                                    })
+                            }
                         })),
                         $(".datatables-users tbody").on("click", ".delete-record", function(e) {
 
@@ -593,10 +672,10 @@
 
                             // $('#editUserForm')[0].reset();
 
-                            var alamat = $(this).data('alamat');
-                            var deskripsi = $(this).data('deskripsi');
+                            var gambar = $(this).data('gambar');
+                            var harga = $(this).data('harga');
                             var nama = $(this).data('nama');
-                            var whatsapp = $(this).data('whatsapp');
+                            var jenis = $(this).data('jenis');
                             var id = $(this).data('id');
                             // var username = $(this).data('username');
                             // var role = $(this).data('role');
@@ -607,12 +686,14 @@
                             // $(".offcanvas-body #id_user").val(id);
                             // $(".offcanvas-body #avatar_old").val(avatar);
                             // $(".offcanvas-body #password_old").val(password);
-                            $(".offcanvas-body #nama_toko").val(nama);
-                            $(".offcanvas-body #alamat").val(alamat);
-                            $(".offcanvas-body #deskripsi").val(deskripsi);
-                            $(".offcanvas-body #id").val(id);
-                            $(".offcanvas-body #whatsapp").val(whatsapp);
+                            $(".offcanvas-body #nama_menu").val(nama);
+                            $(".offcanvas-body #harga").val(harga);
 
+                            $(".offcanvas-body #jenis").val(jenis).change();
+
+                            $(".offcanvas-body #id").val(id);
+                            $(".offcanvas-body .img-preview-add").attr("src",
+                                "{{ asset('/') }}assets/img/menu/" + gambar);
                             // As pointed out in comments, 
                             // it is unnecessary to have to manually call the modal.
                             // $('#addBookDialog').modal('show');\
@@ -643,7 +724,7 @@
 
 
                             $.ajax({
-                                url: '/toko/update_status/' + id,
+                                url: '/menu/update_status/' + id,
                                 method: 'GET',
                                 success: function(response) {
                                     // Handle success response
@@ -688,31 +769,38 @@
                         }),
                         FormValidation.formValidation(t, {
                             fields: {
-                                nama_toko: {
+                                nama_menu: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Masukkan nama toko"
+                                            message: "Masukkan nama menu"
                                         }
                                     }
                                 },
-                                alamat: {
+                                harga: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Masukkan alamat toko"
+                                            message: "Masukkan harga"
+                                        },
+                                        numeric: {
+                                            message: "Masukkan angka untuk harga"
+                                        }
+
+                                    }
+                                },
+                                gambar: {
+                                    validators: {
+                                        file: {
+                                            maxSize: 10 * 1024 * 1024, // 10 MB
+                                            minSize: 1024, // 1 KB
+                                            messageExtension: 'Format file tidak sesuai',
+                                            messageSize: 'Ukuran file harus di antara 1 KB dan 10 MB'
                                         }
                                     }
                                 },
-                                deskripsi: {
+                                jenis: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Masukkan deskripsi toko"
-                                        }
-                                    }
-                                },
-                                whatsapp: {
-                                    validators: {
-                                        notEmpty: {
-                                            message: "Masukkan nomor whatsapp toko"
+                                            message: "Masukkan jenis menu"
                                         }
                                     }
                                 },

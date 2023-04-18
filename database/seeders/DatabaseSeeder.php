@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             StoreSeeder::class,
             InventorySeeder::class,
-            // StudentSeeder::class,
+            MenuSeeder::class,
 
         ]);
     }

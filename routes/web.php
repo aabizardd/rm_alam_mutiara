@@ -67,3 +67,19 @@ Route::prefix('toko')->group(function () {
 
     Route::post('update', [App\Http\Controllers\TokoController::class, 'update'])->name('toko.update');
 });
+
+Route::prefix('menu')->group(function () {
+    Route::get('/', [App\Http\Controllers\MenuController::class, 'index'])->name('menu');
+    Route::get('get_all_menus', [App\Http\Controllers\MenuController::class, 'get_all_menus'])->name('menu.get_all_menus');
+
+    Route::get('update_status/{id}', [App\Http\Controllers\MenuController::class, 'update_status'])->name('menu.update_status');
+
+    Route::get('delete/{id}', [App\Http\Controllers\MenuController::class, 'delete'])->name('menu.delete');
+
+    Route::post('store', [App\Http\Controllers\MenuController::class, 'store'])->name('menu.store');
+    Route::post('update', [App\Http\Controllers\MenuController::class, 'update'])->name('menu.update');
+    Route::get('get_all_menu', [App\Http\Controllers\MenuController::class, 'get_all_menu'])->name('menu.get_all_menu');
+
+});
+
+Route::get('kalkulator_menu', [App\Http\Controllers\MenuController::class, 'kalkulator_menu'])->name('kalkulator_menu');

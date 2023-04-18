@@ -12,7 +12,7 @@
 
             @csrf
 
-            <img class="center mb-2 img-preview-add" src="{{ asset('/') }}assets/img/avatars/20.png" alt=""
+            <img class="center mb-2 img-preview-add" src="{{ asset('/') }}assets/img/default.jpg" alt=""
                 style="width: 200px; height: 200px;display: block;
             margin-left: auto;
             margin-right: auto;border-radius: 100%">

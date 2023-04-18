@@ -2,13 +2,13 @@
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasAddUser" aria-labelledby="offcanvasAddUserLabel">
     <div class="offcanvas-header border-bottom">
         <h6 id="offcanvasAddUserLabel" class="offcanvas-title">
-            Tambah Bahan Baku Baru
+            Tambah Menu Baru
         </h6>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body mx-0 flex-grow-0">
         <form class="add-new-user pt-0" id="addNewUserForm" enctype="multipart/form-data"
-            action="{{ route('inventori.store') }}" method="POST">
+            action="{{ route('menu.store') }}" method="POST">
 
             @csrf
 
@@ -18,28 +18,34 @@
             margin-right: auto;border-radius: 100%">
 
             <div class="mb-3">
-                <label class="form-label" for="">Foto Bahan Baku</label>
-                <input type="file" class="form-control" id="avatar_add" placeholder="John Doe" name="gambar_bahan"
+                <label class="form-label" for="">Foto Menu</label>
+                <input type="file" class="form-control" id="avatar_add" placeholder="John Doe" name="gambar"
                     aria-label="John Doe" onchange="preview_img()" accept="image/*" />
             </div>
 
             <div class="mb-3">
-                <label class="form-label" for="nama_barang">Nama Bahan</label>
-                <input type="text" class="form-control" id="nama_barang" placeholder="Beras" name="nama_barang"
-                    value="{{ old('nama_barang') }}" />
+                <label class="form-label" for="nama_barang">Nama Menu</label>
+                <input type="text" class="form-control" id="nama_menu" placeholder="Contoh: Ayam Bakar Madu"
+                    name="nama_menu" value="{{ old('nama_menu') }}" />
             </div>
 
             <div class="mb-3">
-                <label class="form-label" for="stok">Stok</label>
-                <input type="number" class="form-control" id="stok" placeholder="Beras" name="stok"
-                    value="{{ old('stok') }}" />
+                <label class="form-label" for="stok">Harga</label>
+                <input type="number" class="form-control" id="harga" name="harga" value="{{ old('harga') }}"
+                    placeholder="18000" />
             </div>
 
+
             <div class="mb-3">
-                <label class="form-label" for="satuan_bahan">Satuan Bahan</label>
-                <input type="text" class="form-control" id="satuan_bahan" placeholder="Contoh: Kg"
-                    name="satuan_bahan" value="{{ old('satuan_bahan') }}" />
+                <label class="form-label" for="user-plan">Pilih Jenis Menu</label>
+                <select id="user-plan" class="form-select" name="jenis">
+                    <option value="" selected disabled>---- Pilih ----</option>
+                    <option value="Makanan">Makanan</option>
+                    <option value="Minuman">Minuman</option>
+                </select>
             </div>
+
+
 
 
             <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit" id="submitBtn">
