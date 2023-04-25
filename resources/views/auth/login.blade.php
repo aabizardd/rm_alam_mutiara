@@ -30,8 +30,18 @@
                             Masukkan email dan password pegawai yang sudah didaftarkan
                         </p>
 
+                        @if (session()->has('error'))
+                            <div class="alert alert-danger" role="alert">
+                                {{ session('error') }}
+                            </div>
+                        @endif
+
                         <form id="formAuthentication" class="mb-3" action="{{ route('login') }}" method="POST">
                             @csrf
+
+
+
+
 
                             <div class="mb-3">
                                 <label for="username" class="form-label">Username</label>

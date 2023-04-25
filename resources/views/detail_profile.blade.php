@@ -74,6 +74,8 @@
                                 Gudang</option>
                             <option value="manajer" <?= Auth::user()->role == 'manajer' ? 'selected' : '' ?>>
                                 Manajer</option>
+                            <option value="kasir" <?= Auth::user()->role == 'kasir' ? 'selected' : '' ?>>
+                                Kasir</option>
 
                         </select>
                     </div>

@@ -92,6 +92,17 @@
                                     <h4>Total: <span id="total" class="total"></span></h4>
                                 </div>
 
+                                <div class="col-md-12 mb-4 mt-3">
+                                    <label class="form-label">Jumlah Pembayaran</label>
+                                    <input id="jumlahPembayaran" name="jumlahPembayaran" class="form-control rupiah angka"
+                                        value="Rp. " type="text" placeholder="" />
+                                </div>
+
+                                <div>
+                                    <h4>Kembalian: <span id="kembalian" class="kembalian"></span></h4>
+                                </div>
+
+
                             </div>
 
 
@@ -148,6 +159,8 @@
             });
         });
     </script> --}}
+
+
 
     <script>
         function formatRupiah(angka) {

@@ -8,7 +8,7 @@
                      new Date().getFullYear()
                  );
              </script>
-             , made with ❤️ by
+             <span class="fw-semibold">RM Alam Mutiara</span>, made with ❤️ by
              <a href="#" target="_blank" class="footer-link fw-semibold">ABIZARD</a>
          </div>
 

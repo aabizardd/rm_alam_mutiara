@@ -131,7 +131,24 @@
                 </a>
 
             </li>
+        @elseif(Auth::user()->role == 'kasir')
+            <li class="menu-item <?= Request::segment(1) == 'home' ? 'active' : '' ?>">
+                <a href="{{ route('home') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                    <div data-i18n="Beranda">Beranda</div>
+                </a>
+
+            </li>
+
+            <li class="menu-item <?= Request::segment(1) == 'kalkulator_menu' ? 'active' : '' ?>">
+                <a href="{{ route('kalkulator_menu') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-calculator"></i>
+                    <div data-i18n="Kalkulator Menu">Kalkulator Menu</div>
+                </a>
+
+            </li>
         @endif
+
 
 
     </ul>

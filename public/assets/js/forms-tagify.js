@@ -196,6 +196,45 @@
 
                 // Mengupdate nilai total pada elemen dengan id "total"
                 $("#total").text(formattedTotal);
+
+                let inputKembalian = document.getElementById("kembalian")
+                    .innerText;
+                // Menghapus karakter selain angka
+                inputKembalian = inputKembalian.replace(/[^0-9]/g, "");
+                // Mengubah input kembalian menjadi angka
+                inputKembalian = parseInt(inputKembalian);
+
+                let kembalian = parseFloat(inputKembalian) - parseFloat(harga);
+                document.getElementById("kembalian").innerText = formatRupiah(
+                    kembalian
+                );
+            });
+
+            // Fungsi untuk membatasi input hanya menerima angka
+            $(".angka").on("input", function() {
+                // Mengambil nilai input
+                var value = $(this).val();
+                // Menghapus semua karakter selain angka
+                value = value.replace(/[^0-9]/g, "");
+                // Menyimpan nilai yang sudah dihapus karakter selain angka kembali ke input
+                $(this).val(value);
+            });
+
+            // Fungsi untuk mengubah format input menjadi rupiah
+            $(".rupiah").on("input", function() {
+                // Mengambil nilai input
+                var value = $(this).val();
+                // Menghapus semua karakter selain angka
+                value = value.replace(/[^0-9]/g, "");
+                // Mengubah nilai menjadi format rupiah
+                value = formatRupiah(value);
+
+                $(this).val(value);
+
+                // console.log(value);
+
+                var kembalian = hitungKembalian(value, total);
+                document.getElementById("kembalian").innerText = kembalian;
             });
 
             document.addEventListener("click", function(event) {
@@ -213,9 +252,37 @@
 
                     // Mengupdate nilai total pada elemen dengan id "total"
                     $("#total").text(formattedTotal);
-                    // alert(harga);
+
+                    let inputKembalian = document.getElementById("kembalian")
+                        .innerText;
+                    // Menghapus karakter selain angka
+                    inputKembalian = inputKembalian.replace(/[^0-9]/g, "");
+                    // Mengubah input kembalian menjadi angka
+                    inputKembalian = parseInt(inputKembalian);
+
+                    let kembalian =
+                        parseFloat(inputKembalian) + parseFloat(harga);
+                    document.getElementById(
+                        "kembalian"
+                    ).innerText = formatRupiah(kembalian);
+
+                    console.log(kembalian);
                 }
             });
+
+            function hitungKembalian(angka, total_belanja) {
+                var inputKembalian = angka;
+                // Menghapus karakter selain angka
+                inputKembalian = inputKembalian.replace(/[^0-9]/g, "");
+                // Mengubah input kembalian menjadi angka
+                inputKembalian = parseInt(inputKembalian);
+                // Menghitung kembalian
+                var kembalian = inputKembalian - total_belanja;
+                // Mengubah kembalian menjadi format rupiah
+                var formattedKembalian = formatRupiah(kembalian);
+                // Menampilkan kembalian pada elemen dengan ID 'kembalian'
+                return formattedKembalian;
+            }
         })
         .catch(error => console.error(error));
 
