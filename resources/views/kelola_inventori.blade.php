@@ -771,10 +771,12 @@
                                 autoFocus: new FormValidation.plugins.AutoFocus()
                             }
                         });
-                })(), (function() {
+                })(),
+                (function() {
                     // c.preventDefault();
+                    // alet()
                     var e = document.querySelectorAll(".phone-mask"),
-                        t = document.getElementById("editUserForm");
+                        t = document.getElementById("editNewUserForm");
                     e &&
                         e.forEach(function(e) {
                             new Cleave(e, {
@@ -784,22 +786,46 @@
                         }),
                         FormValidation.formValidation(t, {
                             fields: {
-                                name: {
+                                nama_barang: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Masukkan nama lengkap pengguna"
+                                            message: "Masukkan nama barang"
                                         }
                                     }
                                 },
-                                username: {
+                                stok: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Masukkan username pengguna"
+                                            message: "Masukkan jumlah stok"
+                                        },
+                                        numeric: {
+                                            message: "Masukkan angka untuk jumlah stok"
+                                        },
+                                        between: {
+                                            min: 1,
+                                            max: 10000,
+                                            message: "Jumlah stok harus di antara 1 dan 10.000"
+                                        }
+
+                                    }
+                                },
+                                gambar_bahan: {
+                                    validators: {
+                                        file: {
+                                            maxSize: 10 * 1024 * 1024, // 10 MB
+                                            minSize: 1024, // 1 KB
+                                            messageExtension: 'Format file tidak sesuai',
+                                            messageSize: 'Ukuran file harus di antara 1 KB dan 10 MB'
                                         }
                                     }
                                 },
-
-
+                                satuan_bahan: {
+                                    validators: {
+                                        notEmpty: {
+                                            message: "Masukkan satuan bahan"
+                                        }
+                                    }
+                                },
                             },
                             plugins: {
                                 trigger: new FormValidation.plugins.Trigger(),

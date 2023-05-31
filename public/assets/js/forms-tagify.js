@@ -98,10 +98,10 @@
             // Data whitelist tersedia di sini, dapat digunakan untuk inisialisasi Tagify
             let i = new Tagify(a, {
                 tagTextProp: "name",
-                enforceWhitelist: !0,
-                skipInvalid: !0,
+                // enforceWhitelist: false,
+                skipInvalid: true,
                 dropdown: {
-                    closeOnSelect: !1,
+                    closeOnSelect: false,
                     enabled: 0,
                     classname: "users-list",
                     searchKeys: ["nama_menu", "harga"]
@@ -181,8 +181,7 @@
 
             var total = 0;
             i.on("dropdown:select", function(a) {
-                a.detail.elm == n && i.dropdown.selectAll.call(i);
-                // alert("ok");
+                // e.stopPropagation();
 
                 let selectedData = a.detail.data;
                 let harga = selectedData.harga;
@@ -200,7 +199,7 @@
                 let inputKembalian = document.getElementById("kembalian")
                     .innerText;
                 // Menghapus karakter selain angka
-                inputKembalian = inputKembalian.replace(/[^0-9]/g, "");
+                inputKembalian = inputKembalian.replace(/[^0-9-]/g, "");
                 // Mengubah input kembalian menjadi angka
                 inputKembalian = parseInt(inputKembalian);
 
@@ -256,12 +255,11 @@
                     let inputKembalian = document.getElementById("kembalian")
                         .innerText;
                     // Menghapus karakter selain angka
-                    inputKembalian = inputKembalian.replace(/[^0-9]/g, "");
+                    inputKembalian = inputKembalian.replace(/[^0-9-]/g, "");
                     // Mengubah input kembalian menjadi angka
                     inputKembalian = parseInt(inputKembalian);
 
-                    let kembalian =
-                        parseFloat(inputKembalian) + parseFloat(harga);
+                    let kembalian = inputKembalian + parseFloat(harga);
                     document.getElementById(
                         "kembalian"
                     ).innerText = formatRupiah(kembalian);

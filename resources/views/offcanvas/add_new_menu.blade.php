@@ -12,15 +12,15 @@
 
             @csrf
 
-            <img class="center mb-2 img-preview-add" src="{{ asset('/') }}assets/img/default.jpg" alt=""
+            <img class="center mb-2 img-preview" src="{{ asset('/') }}assets/img/default.jpg" alt=""
                 style="width: 200px; height: 200px;display: block;
             margin-left: auto;
             margin-right: auto;border-radius: 100%">
 
             <div class="mb-3">
                 <label class="form-label" for="">Foto Menu</label>
-                <input type="file" class="form-control" id="avatar_add" placeholder="John Doe" name="gambar"
-                    aria-label="John Doe" onchange="preview_img()" accept="image/*" />
+                <input type="file" class="form-control" id="avatar" placeholder="John Doe" name="gambar"
+                    aria-label="John Doe" onchange="preview_img_2()" accept="image/*" />
             </div>
 
             <div class="mb-3">

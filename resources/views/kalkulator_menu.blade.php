@@ -89,7 +89,7 @@
                                 </div>
 
                                 <div>
-                                    <h4>Total: <span id="total" class="total"></span></h4>
+                                    <h4>Total: <span id="total" class="total">Rp. 0</span></h4>
                                 </div>
 
                                 <div class="col-md-12 mb-4 mt-3">
@@ -99,7 +99,7 @@
                                 </div>
 
                                 <div>
-                                    <h4>Kembalian: <span id="kembalian" class="kembalian"></span></h4>
+                                    <h4>Kembalian: <span id="kembalian" class="kembalian">Rp. 0</span></h4>
                                 </div>
 
 

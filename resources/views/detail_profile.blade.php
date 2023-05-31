@@ -65,7 +65,7 @@
 
                     <div class="mb-3 col-md-6">
                         <label class="form-label" for="role">Role</label>
-                        <select id="role" class="select2 form-select" name="role">
+                        <select id="role" class="select2 form-select" name="role" disabled>
                             {{-- <option value="" disabled>Select</option> --}}
 
                             <option value="admin" <?= Auth::user()->role == 'admin' ? 'selected' : '' ?>>Admin
