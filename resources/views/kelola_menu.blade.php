@@ -240,7 +240,7 @@
                                             o = a.harga,
                                             l = a.gambar;
                                         z = a.satuan_bahan;
-                                        r = "/inventori/detail/" + a.value;
+                                        r = "#";
                                         return (
                                             '<div class="d-flex justify-content-start align-items-center user-name"><div class="avatar-wrapper"><div class="avatar avatar-sm me-3">' +
                                             (l ?
@@ -818,10 +818,11 @@
                                 autoFocus: new FormValidation.plugins.AutoFocus()
                             }
                         });
-                })(), (function() {
+                })(),
+                (function() {
                     // c.preventDefault();
                     var e = document.querySelectorAll(".phone-mask"),
-                        t = document.getElementById("editUserForm");
+                        t = document.getElementById("editNewUserForm");
                     e &&
                         e.forEach(function(e) {
                             new Cleave(e, {
@@ -831,22 +832,41 @@
                         }),
                         FormValidation.formValidation(t, {
                             fields: {
-                                name: {
+                                nama_menu: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Masukkan nama lengkap pengguna"
+                                            message: "Masukkan nama menu"
                                         }
                                     }
                                 },
-                                username: {
+                                harga: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Masukkan username pengguna"
+                                            message: "Masukkan harga"
+                                        },
+                                        numeric: {
+                                            message: "Masukkan angka untuk harga"
+                                        }
+
+                                    }
+                                },
+                                gambar: {
+                                    validators: {
+                                        file: {
+                                            maxSize: 10 * 1024 * 1024, // 10 MB
+                                            minSize: 1024, // 1 KB
+                                            messageExtension: 'Format file tidak sesuai',
+                                            messageSize: 'Ukuran file harus di antara 1 KB dan 10 MB'
                                         }
                                     }
                                 },
-
-
+                                jenis: {
+                                    validators: {
+                                        notEmpty: {
+                                            message: "Masukkan jenis menu"
+                                        }
+                                    }
+                                },
                             },
                             plugins: {
                                 trigger: new FormValidation.plugins.Trigger(),

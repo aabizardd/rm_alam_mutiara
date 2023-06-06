@@ -7,7 +7,7 @@
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body mx-0 flex-grow-0">
-        <form class="add-new-user pt-0" id="addNewUserForm" enctype="multipart/form-data"
+        <form class="add-new-user pt-0" id="editNewUserForm" enctype="multipart/form-data"
             action="{{ route('menu.update') }}" method="POST">
 
             @csrf
