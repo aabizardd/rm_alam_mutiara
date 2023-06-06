@@ -33,4 +33,16 @@ class InventoryUse extends Model
         return $details;
 
     }
+
+    public static function penggunaan_terakhir()
+    {
+
+        $details = InventoryUse::join('inventories', 'inventories.id', '=', 'inventory_use.id_inventory')
+            ->orderByDesc('created_at')
+        // ->limit(5)
+            ->get(['inventory_use.status', 'inventory_use.created_at', 'inventory_use.stok_berubah', 'inventories.nama_bahan', 'inventories.id as id_bahan', 'inventories.satuan_bahan', 'inventories.gambar_bahan']);
+
+        return $details;
+
+    }
 }

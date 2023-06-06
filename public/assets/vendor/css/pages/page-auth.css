@@ -44,10 +44,10 @@ html:not([dir="rtl"])
 }
 .authentication-wrapper.authentication-basic .authentication-inner:after {
     width: 20rem;
-    height: 20rem;
+    height: 30rem;
     content: " ";
     position: fixed;
-    bottom: -90px;
+    bottom: -160px;
     background: url("../../../img/pages/atas-kiri.png");
     background-size: cover;
 }
