@@ -29,7 +29,7 @@
                         <!-- /Logo -->
                         <h5 class="mb-2">Selamat Datang di Aplikasi Rumah Makan Alam Mutiara! 👋</h5>
                         <p class="mb-4">
-                            Masukkan email dan password pegawai yang sudah didaftarkan
+                            Masukkan username dan password pegawai yang sudah didaftarkan
                         </p>
 
                         @if (session()->has('error'))
@@ -40,10 +40,6 @@
 
                         <form id="formAuthentication" class="mb-3" action="{{ route('login') }}" method="POST">
                             @csrf
-
-
-
-
 
                             <div class="mb-3">
                                 <label for="username" class="form-label">Username</label>
