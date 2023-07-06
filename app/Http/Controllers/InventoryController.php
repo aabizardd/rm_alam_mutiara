@@ -179,8 +179,14 @@ class InventoryController extends Controller
         if ($request->status == 1) {
 
             $validator = Validator::make($request->all(), [
-                'harga' => ['required', 'numeric'],
+                'harga' => ['required', 'numeric', 'min:1'],
                 'nota' => ['required', 'image', 'mimes:jpg,png,jpeg,webp,gif,svg,bmp', 'max:2048'],
+            ], [
+                'harga.min' => 'Harga tidak boleh bernilai minus atau nol.',
+                'nota.required' => 'Nota harus diunggah.',
+                'nota.image' => 'File nota harus berupa gambar.',
+                'nota.mimes' => 'Format gambar yang diizinkan adalah jpg, png, jpeg, webp, gif, svg, dan bmp.',
+                'nota.max' => 'Ukuran file nota tidak boleh melebihi 2 MB.',
             ]);
 
             // dd($req->name);
