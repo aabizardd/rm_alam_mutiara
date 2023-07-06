@@ -19,7 +19,7 @@
 
             <div class="mb-3">
                 <label class="form-label" for="stok">Jumlah Stok</label>
-                <input type="number" class="form-control" id="stok" placeholder="Beras" name="stok"
+                <input type="number" class="form-control" id="stok" placeholder="12" name="stok"
                     value="{{ old('stok') }}" />
             </div>
 

@@ -15,10 +15,6 @@
         <div class="authentication-wrapper authentication-basic container-p-y">
             <div class="authentication-inner py-4">
 
-                <center>
-                    <img src="{{ asset('assets/img/avatars/wak_dody.png') }}" alt="" srcset="" class="mb-5"
-                        style="border-radius: 100%; height: 200px;">
-                </center>
 
                 <!-- Register -->
                 <div class="card">

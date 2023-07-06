@@ -41,7 +41,6 @@ class InventoryController extends Controller
                 ->rawColumns(['action'])
                 ->toJson();
         }
-
     }
 
     public function store(Request $req)
@@ -74,7 +73,6 @@ class InventoryController extends Controller
         ]);
 
         return redirect()->back()->with(['success' => 'Data Berhasil Disimpan!']);
-
     }
 
     public function update_status($id)
@@ -90,7 +88,6 @@ class InventoryController extends Controller
             $data = [
                 'status_bahan' => 0,
             ];
-
         } else {
 
             $data = [
@@ -101,7 +98,6 @@ class InventoryController extends Controller
         $inventory->update($data);
 
         return redirect()->back()->with(['success' => 'Status Inventori Berhasil Diupdate!']);
-
     }
 
     public function delete($id)
@@ -157,7 +153,6 @@ class InventoryController extends Controller
         $inventory->update($data);
 
         return redirect()->back()->with(['success' => 'Data Bahan Baku Berhasil Diupdate!']);
-
     }
 
     public function detail($id)
@@ -174,7 +169,6 @@ class InventoryController extends Controller
         ];
 
         return view('detail_inventori', $data);
-
     }
 
     public function kelola_stok(Request $request)
@@ -204,7 +198,6 @@ class InventoryController extends Controller
         } else {
 
             $harga = 0;
-
         }
 
         $inventory = Inventory::findOrFail($request->inventory_id);
@@ -217,7 +210,6 @@ class InventoryController extends Controller
         if ($status == 1) {
 
             $stok_akhir = $stok_akhir + $request->stok;
-
         } else {
 
             $stok_akhir = $stok_akhir - $request->stok;
@@ -225,9 +217,7 @@ class InventoryController extends Controller
             if ($stok_akhir < 0) {
 
                 return redirect()->back()->with(['error' => 'Stok Bahan Baku Melebihi Batas!']);
-
             }
-
         }
 
         $data_inventory_use = [
@@ -253,7 +243,6 @@ class InventoryController extends Controller
         InventoryUse::create($data_inventory_use);
 
         return redirect()->back()->with(['success' => 'Data Stok Berhasil Diupdate!']);
-
     }
 
     public function get_detail_penggunaan(Request $request, $id)
@@ -274,7 +263,35 @@ class InventoryController extends Controller
                 ->rawColumns(['action'])
                 ->toJson();
         }
-
     }
 
+
+    public function delete_inventory_use($id)
+    {
+
+        $data_use = InventoryUse::find($id);
+
+        $data_inventory = Inventory::find($data_use->id_inventory);
+        // dd($data_use->id_inventory);
+
+        if ($data_use->status == 0) {
+
+            $data_upd = [
+                'stok_bahan' => $data_inventory->stok_bahan + $data_use->stok_berubah
+            ];
+        } else {
+            $data_upd = [
+                'stok_bahan' => $data_inventory->stok_bahan - $data_use->stok_berubah
+            ];
+
+            if (file_exists(public_path('assets/img/nota/' . $data_use->nota))) {
+                unlink(public_path('assets/img/nota/' . $data_use->nota));
+            }
+        }
+
+        $data_inventory->update($data_upd);
+
+        $data_use->delete();
+        return redirect()->back()->with(['success' => 'Data Penggunaan Stok Berhasil Dihapus!']);
+    }
 }

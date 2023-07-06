@@ -136,6 +136,7 @@
                                             <th>Tanggal Kelola</th>
                                             <th>Sisa Stok</th>
                                             <th>Harga</th>
+                                            <th>Aksi</th>
 
                                         </tr>
                                     </thead>
@@ -265,6 +266,9 @@
                                     data: 'harga',
                                     name: 'harga',
                                 },
+                                {
+                                    data: 'action',
+                                },
                             ],
                             columnDefs: [{
                                     className: "control",
@@ -374,6 +378,20 @@
                                         return ('Rp' + ribuan);
                                     },
                                 },
+                                {
+                                    targets: -1,
+                                    title: "Actions",
+                                    searchable: !1,
+                                    orderable: !1,
+                                    render: function(e, t, a, n) {
+                                        var s = "/inventori/delete_inventory_use/" + a.id;
+
+                                        return (
+                                            '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon btn-edit" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEditUser"><i class="bx bx-edit"></i></button><a class="btn btn-sm btn-icon delete-record" href="' +
+                                            s + '"><i class="bx bx-trash"></i></a>'
+                                        );
+                                    },
+                                }
 
                             ],
                             order: [
@@ -657,8 +675,8 @@
                             // });
 
                             swal({
-                                    title: "Are you sure you want to delete this record?",
-                                    text: "If you delete this, it will be gone forever.",
+                                    title: "Apakah anda yakin untuk menghapus data ini?",
+                                    text: "Jika Anda menghapus ini, itu akan hilang selamanya.",
                                     icon: "warning",
                                     buttons: ["Batal", "Ya!"],
                                     dangerMode: true,

@@ -51,6 +51,9 @@ class HomeController extends Controller
             $data['makanan_hariini'] = Menu::where('status', 1)->where('jenis', 'Makanan')->get();
 
             return view('home', $data);
+        } else {
+
+            return redirect()->to('kelola_pengguna');
         }
     }
 }

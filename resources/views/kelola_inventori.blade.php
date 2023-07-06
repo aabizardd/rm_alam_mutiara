@@ -599,8 +599,8 @@
                             // });
 
                             swal({
-                                    title: "Are you sure you want to delete this record?",
-                                    text: "If you delete this, it will be gone forever.",
+                                    title: "Apakah kamu yakin untuk menghapus bahan ini?",
+                                    text: "Jika kamu menghapus ini, makan akan terhapus selamanya",
                                     icon: "warning",
                                     buttons: ["Batal", "Ya!"],
                                     dangerMode: true,
@@ -746,7 +746,7 @@
                                             maxSize: 10 * 1024 * 1024, // 10 MB
                                             minSize: 1024, // 1 KB
                                             messageExtension: 'Format file tidak sesuai',
-                                            messageSize: 'Ukuran file harus di antara 1 KB dan 10 MB'
+                                            message: 'Ukuran file harus di antara 1 KB dan 10 MB'
                                         }
                                     }
                                 },
@@ -815,7 +815,7 @@
                                             maxSize: 10 * 1024 * 1024, // 10 MB
                                             minSize: 1024, // 1 KB
                                             messageExtension: 'Format file tidak sesuai',
-                                            messageSize: 'Ukuran file harus di antara 1 KB dan 10 MB'
+                                            message: 'Ukuran file harus di antara 1 KB dan 10 MB'
                                         }
                                     }
                                 },

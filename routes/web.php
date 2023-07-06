@@ -33,7 +33,6 @@ Route::prefix('kelola_pengguna')->group(function () {
     Route::post('store', [App\Http\Controllers\KelolaPenggunaController::class, 'store'])->name('kelola_pengguna.store');
     Route::post('update', [App\Http\Controllers\KelolaPenggunaController::class, 'update'])->name('kelola_pengguna.update');
     Route::get('update_status/{id}', [App\Http\Controllers\KelolaPenggunaController::class, 'update_status'])->name('kelola_pengguna.update_status');
-
 });
 
 Route::prefix('profile')->group(function () {
@@ -42,7 +41,6 @@ Route::prefix('profile')->group(function () {
     Route::post('hapus_akun', [App\Http\Controllers\ProfileController::class, 'hapus_akun'])->name('profile.hapus_akun');
     Route::get('update_password', [App\Http\Controllers\ProfileController::class, 'update_password'])->name('profile.update_password');
     Route::post('edit_pw', [App\Http\Controllers\ProfileController::class, 'edit_pw'])->name('profile.edit_pw');
-
 });
 
 Route::prefix('inventori')->group(function () {
@@ -52,7 +50,12 @@ Route::prefix('inventori')->group(function () {
     Route::get('delete/{id}', [App\Http\Controllers\InventoryController::class, 'delete'])->name('inventori.delete');
     Route::post('store', [App\Http\Controllers\InventoryController::class, 'store'])->name('inventori.store');
     Route::post('update', [App\Http\Controllers\InventoryController::class, 'update'])->name('inventori.update');
+
     Route::get('detail/{id}', [App\Http\Controllers\InventoryController::class, 'detail'])->name('inventori.detail');
+
+    Route::get('delete_inventory_use/{id}', [App\Http\Controllers\InventoryController::class, 'delete_inventory_use'])->name('inventori.delete_inventory_use');
+
+
     Route::post('kelola_stok', [App\Http\Controllers\InventoryController::class, 'kelola_stok'])->name('inventori.kelola_stok');
     Route::get('get_detail_penggunaan/{id}', [App\Http\Controllers\InventoryController::class, 'get_detail_penggunaan'])->name('inventori.get_detail_penggunaan');
 });
@@ -79,7 +82,6 @@ Route::prefix('menu')->group(function () {
     Route::post('store', [App\Http\Controllers\MenuController::class, 'store'])->name('menu.store');
     Route::post('update', [App\Http\Controllers\MenuController::class, 'update'])->name('menu.update');
     Route::get('get_all_menu', [App\Http\Controllers\MenuController::class, 'get_all_menu'])->name('menu.get_all_menu');
-
 });
 
 Route::get('kalkulator_menu', [App\Http\Controllers\MenuController::class, 'kalkulator_menu'])->name('kalkulator_menu');

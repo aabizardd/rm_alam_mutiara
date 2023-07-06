@@ -40,17 +40,6 @@
     </ul>
 </li> --}}
         @if (Auth::user()->role == 'admin')
-            <!-- Dashboards -->
-            <li class="menu-item <?= Request::segment(1) == 'home' ? 'active' : '' ?>">
-                <a href="{{ route('home') }}" class="menu-link">
-                    <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                    <div data-i18n="Beranda">Beranda</div>
-                </a>
-
-            </li>
-
-
-
             <li class="menu-item <?= Request::segment(1) == 'kelola_pengguna' ? 'active' : '' ?>">
                 <a href="{{ route('kelola_pengguna') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-user"></i>
